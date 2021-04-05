@@ -1,0 +1,12 @@
+{
+  "name": "pharmaclin",
+  "displayName": "pharmaclin",
+  "expo": {
+    "name": "pharmaclin",
+    "slug": "pharmaclin",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
