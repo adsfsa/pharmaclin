@@ -5,8 +5,14 @@
     "name": "pharmaclin",
     "slug": "pharmaclin",
     "version": "1.0.0",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
-    ]
-  }
+    ],
+    "ios": {
+      "supportsTablet": true
+    }
+  }  
 }
