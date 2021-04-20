@@ -23,10 +23,10 @@ export default () => {
     }
     return (
         <Container>            
+            <View style = {{alignSelf: 'center', marginTop: 60}}>
+                <PharmaClinLogo100x100 />
+            </View>
             <Scroller>
-                <View style = {{alignSelf: 'center'}}>
-                    <PharmaClinLogo100x100 />
-                </View>
                 <View style={{width:'100%', padding: 10}}>
                     <ButtonsView nomeIconeEsquerdo = "notifications-active" texto = "LEMBRETES"
                         onPress={() => navigation.navigate('Lembretes')}/>
@@ -46,8 +46,6 @@ export default () => {
                     <ButtonsView nomeIconeEsquerdo = "card-membership" texto = "CARTÃO FIDELIDADE"
                         onPress={() => navigation.navigate('CartaoFidelidade')}/>
                 </View>
-                <Button onPress={logout} title="Logout" />
-                <Button onPress={testar} title="Seus Dados" />
             </Scroller>
 
             <View style = {{alignSelf: 'center', flexDirection: 'row', justifyContent:'space-around', width: '100%'}} >

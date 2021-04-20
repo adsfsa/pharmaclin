@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Container = styled.SafeAreaView`
     background-color: #00BACD;
-    flex: 1;
+    flex: 1;    
     justify-content: center;
     align-items: center; 
 `;
@@ -38,20 +38,24 @@ export const TopoPadrao = ({setaVoltar, size}) =>{
         </TopContainer>
     );
 }
-export const TopoInterno = ({IconeCentral}) =>{
+export const TopoInterno = ({IconeCentral, setaVoltar}) =>{
     return(
         <TopContainer>
             <Icon
                 name='arrow-back'
                 color='#FFFFFF'
+                onPress = {setaVoltar}
+                size = {24}
             />
             <Icon
                 name= {IconeCentral}
                 color='#FFFFFF'
+                size = {50}
             />
             <Icon
                 name='arrow-back'
                 color='#00BACD'
+                size = {24}
             />
         </TopContainer>
     );
@@ -120,9 +124,9 @@ export const CustomCheckBox = ({title, checkedIcon, uncheckedIcon}) => {
 }
 export const CustomLInk = ({onPress, Texto}) => {
     return (
-        <TouchableOpacity style={Link} onPress= {onPress} >
+        <TouchableOpacity style={{Link}} onPress= {onPress} >
                 <Text style={TextStyles.LinkText}>
-                    "Texto"
+                    {Texto}
                 </Text>
         </TouchableOpacity>
     )
@@ -155,7 +159,7 @@ export const TextStyles = StyleSheet.create({
     baseText: {
       fontFamily: "Century-Gothic",
       color: '#000000',
-      fontSize: 12,
+      fontSize: 15,
     },
     preloadText: {
         fontFamily: "Century-Gothic",

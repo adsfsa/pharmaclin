@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Alert, Text } from 'react-native';
-import styled from 'styled-components/native';
+import { Alert, Text, View } from 'react-native';
 import {UserContext} from '../../contexts/UserContext';
 
 import { useNavigation } from '@react-navigation/native';
@@ -8,64 +7,55 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Container, InputContainer, BtnDestaque, TextStyles, CustomCheckBox, Link, InputSenha, InputObrigatorio} from '../../components/Components'; //Componentes "repetitivos", criados em Components
 import PharmaClinLogo100x100 from '../../../svgs/PharmaClinLogo100x100';
 
-const admin = {id: 1, Nome: 'admin', Email: 'admin@admin.com', Senha: '1234'}
+const admin = {id: 1, Nome: 'ADMIN', Email: 'admin@admin.com', Senha: '1234', Avatar: ''}
 
 export default () => {
     const navigation = useNavigation();
-
-    //#const [user, setUser] = useState ({id: 1, Nome: '', Email: '', Senha:''});    
+ 
     const [Email, setEmail] = useState ('');
     const [Senha, setSenha] = useState ('');
-    //const [id, setId] = useState (1);
     var id = 1;
     
     const Redirecionar = () => {
         navigation.navigate('Cadastro');
     }
     const {dispatch: userDispatch} = useContext(UserContext);
+
     const verificarLogin = async() => {
         id++;
         if(Email !=='' && Senha !== ''){
-            if (admin.Email === Email && admin.Senha === Senha)
-            {
-                var adminString = JSON.stringify(admin);
-                await AsyncStorage.setItem('usuario', adminString)
-                userDispatch({
-                    type: 'setLogin',
-                    payload: {
-                        id: admin.id,
-                        nome: admin.Nome,
-                        email: admin.Email,
-                        senha: admin.Senha
-                    } 
-                });
-                alert('Bem Vindo Admin!')
-                navigation.reset({ routes: [{name: 'MainTab'}] });
-                
+            const verificar = await AsyncStorage.getItem('usuario');
+            if (verificar !== null) {
+                const usuario = JSON.parse(verificar);
+                if (usuario.Email === Email && usuario.Senha ===Senha) {
+                    alert(`Bem Vindo ${usuario.Nome}!`)
+                    navigation.reset({ routes: [{name: 'MainTab'}] });
+                } else{
+                    alert('Conta não encontrada. Cadastre-se!');
+                }
             } else {
-                alert('Email ou Senha incorretos. Cadastre-se!');
-            }/*else {
-                const usuario = {id: id++, textoNome: '-', textoEmail: textoEmail, textoSenha: textoSenha};
-                setUser(usuario);
-                var userString = JSON.stringify(usuario);
-                if(AsyncStorage.getItem('usuario') !== ''){
-                    await AsyncStorage.setItem('usuario', userString);
+                if (admin.Email === Email && admin.Senha === Senha)
+                {
+                    var adminString = JSON.stringify(admin);
+                    await AsyncStorage.setItem('usuario', adminString)
                     userDispatch({
                         type: 'setLogin',
                         payload: {
-                            id: usuario.id,
-                            nome: usuario.textoNome,
-                            email: usuario.textoEmail,
-                            senha: usuario.textoSenha
+                            id: admin.id,
+                            nome: admin.Nome,
+                            email: admin.Email,
+                            senha: admin.Senha,
+                            avatar: admin.Avatar
                         } 
                     });
-                    console.log('Bem Vindo!');
-                    navigation.reset({ routes: [{name: 'MainTab'}] })
-
+                    alert('Bem Vindo ADMIN!')
+                    navigation.reset({ routes: [{name: 'MainTab'}] });
+                    
                 } else {
-                    console.log('Email ou Senha incorretos. Cadastre-se!');
+                    alert('Conta não encontrada. Cadastre-se!');
+                    
                 }
-            }*/            
+            }
         } else{
             alert('Preencha os campos!');
         }
@@ -75,8 +65,9 @@ export default () => {
     return (
         <Container>
 
-            <PharmaClinLogo100x100 />
-
+            <View style = {{alignSelf: 'center', marginTop: 60}}>
+                <PharmaClinLogo100x100 />
+            </View>
             <InputContainer >
                 <InputObrigatorio
                     placeholder="Email*"
@@ -106,7 +97,7 @@ export default () => {
                 title = "Manter conectado"
                 checkedIcon = "check-box"
                 uncheckedIcon = "check-box-outline-blank"
-                /*onPress = {[email=> setTextoEmail(email), senha=> setTextoSenha(senha)]}*/
+                /*onPress = ?*/
             />
             
             <Link onPress={Redirecionar} >
@@ -114,6 +105,7 @@ export default () => {
                     Criar conta
                 </Text>
             </Link>
+
 
         </Container>
     );

@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
-
+import { Image } from "react-native";
 import { UserContext } from '../contexts/UserContext'
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -32,8 +33,18 @@ const AvatarIcon = styled.Image`
     border-radius: 12px;
 `;
 
+
 export default ({state, navigation}) => {
     const { state:user } = useContext(UserContext);
+    const [usuario, setUsuario] = useState({});
+
+    useEffect(()=> {findUsusario();} ,[]);
+
+    const findUsusario = async() => {
+        const string = await AsyncStorage.getItem('usuario');
+        const object = JSON.parse(string);
+        setUsuario(object);
+    }
 
     const goTo = (screenName) => {
         navigation.navigate(screenName);
@@ -62,8 +73,8 @@ export default ({state, navigation}) => {
             </TabItem>
 
             <TabItem onPress={()=>goTo('Perfil')} >
-                {user.avatar != '' ?
-                    <AvatarIcon source={{uri: user.avatar}} />
+                {usuario.Avatar != '' ?
+                    <Image source={{uri: usuario.Avatar}} style ={{height: 30, width: 30, borderRadius: 15, borderWidth: 3, borderColor: state.index===4? "#FE7F57" : "#B2B2B2"}} />
                     :
                     <MaterialIcons name="account-circle" size={30} color={state.index===4? "#FE7F57" : "#B2B2B2"} />
                 }
