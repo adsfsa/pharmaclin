@@ -47,5 +47,4 @@ function AppTab(){
         </NavigationContainer>
     );
 }
- 
 export default AppTab;
