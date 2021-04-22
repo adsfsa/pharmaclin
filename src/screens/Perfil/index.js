@@ -11,14 +11,117 @@ import { UserContext } from '../../contexts/UserContext'
 export default () => {
     const navigation = useNavigation();
     const [usuario, setUsuario] = useState({});
+
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [avatar, setAvatar] = useState('null');
+
+
     const { state:user } = useContext(UserContext);
+    const {dispatch: userDispatch} = useContext(UserContext);
     
-    const findUsusario = async() => {
-        const result = await AsyncStorage.getItem('usuario');
-        const object = JSON.parse(result);
-        setUsuario(object);
-    }
-    useEffect(()=> {findUsusario();} ,[]);
+    useEffect(()=> {
+        async function carregarAvatar(){
+           const nome = await AsyncStorage.getItem("nome");
+           if (nome) {
+                setNome(nome);
+           }
+        }
+        carregarAvatar();
+    } ,[]);
+
+    useEffect(()=> {
+        async function carregarAvatar(){
+           const email = await AsyncStorage.getItem("email");
+           if (email) {
+                setEmail(email);
+           }
+        }
+        carregarAvatar();
+    } ,[]);
+
+    useEffect(()=> {
+        async function carregarAvatar(){
+           const senha = await AsyncStorage.getItem("senha");
+           if (senha) {
+                setSenha(senha);
+           }
+        }
+        carregarAvatar();
+    } ,[]);
+
+    useEffect(()=> {
+        async function carregarAvatar(){
+           const avatar = await AsyncStorage.getItem("avatar");
+           if (avatar) {
+                setAvatar(avatar);
+           }
+        }
+        carregarAvatar();
+    } ,[]);
+
+    useEffect(()=> {
+        async function atualizarAvatar(){
+            if (avatar) {
+                await AsyncStorage.setItem('avatar', avatar)
+                userDispatch({
+                    type: 'setAvatar',
+                    payload: {
+                        avatar: avatar
+                    } 
+                });                
+            }
+        }
+        atualizarAvatar();
+
+    } ,[avatar]);
+
+    useEffect(()=> {
+        async function atualizarNome(){
+            if (nome) {
+                await AsyncStorage.setItem('nome', nome)
+                userDispatch({
+                    type: 'setNome',
+                    payload: {
+                        nome: nome
+                    } 
+                });   
+            }
+        }
+        atualizarNome();
+    } ,[nome]);
+
+    useEffect(()=> {
+        async function atualizarEmail(){
+            if (email) {
+                await AsyncStorage.setItem('email', email)
+                userDispatch({
+                    type: 'setEmail',
+                    payload: {
+                        email: email
+                    } 
+                });   
+            }
+        }
+        atualizarEmail();
+    } ,[email]);
+
+    useEffect(()=> {
+        async function atualizarSenha(){
+            if (senha) {
+                await AsyncStorage.setItem('senha', senha)
+                userDispatch({
+                    type: 'setSenha',
+                    payload: {
+                        senha: senha
+                    } 
+                });   
+            }
+        }
+        atualizarSenha();
+    } ,[senha]);
+
 
     const ExcluirConta = async() =>{//apaga todas os dados salvos na async
         await AsyncStorage.getAllKeys((error,keys)=>AsyncStorage.multiRemove(keys));
@@ -28,16 +131,17 @@ export default () => {
     return (
         <Container>
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
-                
-                {usuario.Avatar != '' ?
-                <Image source={{uri: usuario.Avatar}} style={{width: 50, height: 50, borderRadius: 25}}/>
-                :
-                <Icon name='account-circle' size={50} color = "#FFFFFF" />
-                }
-                
-                <Text style={TextosPerfil.NomeDestaque} >{`${usuario.Nome}`}</Text>
-                <Text style={TextStyles.baseText} >{`${usuario.Email}`}</Text>
-
+                <View style={{marginBottom: 15, alignItems: 'center', width: '100%', justifyContent: 'center'}}>
+                    {avatar != null && avatar != 'null'?
+                    <Image source={{uri: avatar}} style={{width: 50, height: 50, borderRadius: 25}}/>
+                    :
+                    <Icon name='account-circle' size={50} color = "#FFFFFF" />
+                    }
+                </View>
+                <View style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+                    <Text style={TextosPerfil.NomeDestaque} >{`${nome}`}</Text>
+                    <Text style={TextStyles.baseText} >{`${email}`}</Text>
+                </View>
                 <View style={{flex: 1, width:'100%', padding: 40, paddingBottom: 40 , alignSelf:'center',justifyContent: 'space-around'}}>
                     <BtnDestaque onPress={() => navigation.navigate('EditarPerfil')} >
                         <Text style={TextStyles.baseText}>
@@ -106,4 +210,3 @@ export const TextosPerfil = StyleSheet.create({
         fontSize: 20,
     },
 });
-//#<Button onPress={findUsusario} title="Seus Dados" />

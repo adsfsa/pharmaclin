@@ -7,39 +7,36 @@ import { Container, InputContainer, BtnDestaque, TextStyles, InputSenha, InputOb
 
 export default () => {
     const navigation = useNavigation();
-    const [user, setUser] = useState ({id: 1, Nome: '', Email: '', Senha:'', Avatar: ''});
-    const [Nome, setNome] = useState ('');
-    const [Email, setEmail] = useState ('');
-    const [Senha, setSenha] = useState ('');
-    var id = 1;
+    const [nome, setNome] = useState ('');
+    const [email, setEmail] = useState ('');
+    const [senha, setSenha] = useState ('');
     
     const {dispatch: userDispatch} = useContext(UserContext);
     
     const Cadastrar = async() => {
-        if(Nome!=='' && Email !=='' && Senha !== ''){    
-            const usuario = {id: id++, Nome: Nome.toUpperCase(), Email: Email, Senha: Senha, Avatar:''};
-            setUser(usuario);
-            var userString = JSON.stringify(usuario);
-            const verificar = await AsyncStorage.getItem('usuario');
-            if(verificar === null){
-                await AsyncStorage.setItem('usuario', userString);
+        var id = '2';
+        if(nome!=='' && email !=='' && senha !== ''){ 
+            const getEmail = await AsyncStorage.getItem('email');
+            if (getEmail !== email) {                
+                let userChaves= [['id', id], ['nome', nome.toUpperCase()], ['email', email], ['senha', senha]];
+                await AsyncStorage.multiSet(userChaves);
                 userDispatch({
                     type: 'setLogin',
                     payload: {
-                        id: usuario.id,
-                        nome: usuario.Nome,
-                        email: usuario.Email,
-                        senha: usuario.Senha,
-                        avatar: usuario.Avatar
+                        id: id,
+                        nome: nome.toUpperCase(),
+                        email: email,
+                        senha: senha
                     } 
                 });
-                alert(`Bem Vindo ${usuario.Nome}!`);
-                navigation.reset({ routes: [{name: 'MainTab'}] })
-            } else{
-                alert('Você já possui uma conta ativa! Reinicie o app para entrar.')
+                alert(`Bem Vindo ${nome.toUpperCase()}!`);
+                console.log(getEmail);
+                navigation.reset({ routes: [{name: 'MainTab'}] });
+            } else {
+                alert('O email informado já está cadastrado.')
             }
-                      
-        } else{
+            
+        } else {
             alert('Preencha os campos!');
         }
 
@@ -61,26 +58,26 @@ export default () => {
                         leftIcon = "person"
                         keyboardType = "default"
                         autoCompleteType = {'username'}
-                        value = {Nome}
-                        onChangeText = {Nome => setNome(Nome)}
+                        value = {nome}
+                        onChangeText = {nome => setNome(nome)}
                     />
                     <InputObrigatorio
                         placeholder="Digite seu email*"
                         leftIcon = "email"
                         keyboardType = "email-address"
                         autoCompleteType = {'email'}
-                        value = {Email}
-                        onChangeText = {Email => setEmail(Email)}
+                        value = {email}
+                        onChangeText = {email => setEmail(email)}
                     />
                     <InputSenha
                         placeholder="Crie uma senha*"
                         leftIcon = "lock"
                         autoCompleteType = {'password'}
-                        value = {Senha}
-                        onChangeText = {Senha => setSenha(Senha)}
+                        value = {senha}
+                        onChangeText = {senha => setSenha(senha)}
                     />
 
-                    <BtnDestaque onPress= {Cadastrar} >
+                    <BtnDestaque onPress= {()=>Cadastrar()} >
                         <Text style={TextStyles.BtnDestaqueText}>
                             CADASTRAR
                         </Text>
