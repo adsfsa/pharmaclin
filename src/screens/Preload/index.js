@@ -8,13 +8,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default () => {
 
     const navigation = useNavigation();
+    const verificarLogin = async () => {
+        const id = await AsyncStorage.getItem('id');
+        navigation.reset({ routes: [{name: id !== null? 'MainTab': 'Login'}] })
+    }
 
     //navigation.navigate('Login');
     useEffect(()=>{
-        const verificarLogin = async () => {
-            const usuario = await AsyncStorage.getItem('usuario');
-            navigation.reset({ routes: [{name: usuario !== null? 'MainTab': 'Login'}] })
-        }
         verificarLogin();
     }, []);
 

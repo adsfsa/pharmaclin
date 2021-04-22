@@ -10,24 +10,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default () => {  
     const navigation = useNavigation();
-
-    const logout = async() =>{
-        await AsyncStorage.removeItem('usuario')
-        navigation.reset({ routes: [{name: 'Login'}] })
-    }
-    const testar = async() =>{
-        const json = await AsyncStorage.getItem('usuario')
-        const objeto = JSON.parse(json);
-        console.log(objeto); //mude para json ou objeto e veja a diferença no console (inspecionar, cmd ou localhost->device)
-        alert(json);
-    }
     return (
         <Container>            
-            <Scroller>
-                <View style = {{alignSelf: 'center'}}>
-                    <PharmaClinLogo100x100 />
-                </View>
-                <View style={{width:'100%', padding: 10}}>
+            <View style = {{alignSelf: 'center', marginTop: 60}}>
+                <PharmaClinLogo100x100 />
+            </View>
+            <View style={{flex: 1, width: '100%', padding: 20}}>
+                <View style={{flex: 1, width:'100%', padding: 10}}>
                     <ButtonsView nomeIconeEsquerdo = "notifications-active" texto = "LEMBRETES"
                         onPress={() => navigation.navigate('Lembretes')}/>
 
@@ -46,20 +35,18 @@ export default () => {
                     <ButtonsView nomeIconeEsquerdo = "card-membership" texto = "CARTÃO FIDELIDADE"
                         onPress={() => navigation.navigate('CartaoFidelidade')}/>
                 </View>
-                <Button onPress={logout} title="Logout" />
-                <Button onPress={testar} title="Seus Dados" />
-            </Scroller>
-
-            <View style = {{alignSelf: 'center', flexDirection: 'row', justifyContent:'space-around', width: '100%'}} >
-                <BotaoInferiorEsquerdo>
+            </View>
+            <View style = {{padding: 30, flexDirection: 'row', justifyContent:'space-between', width: '100%'}} >
+                <BotaoInferiorEsquerdo onPress={() => navigation.navigate('Mapa')}>
                     <Text style = {Textos.TextoInferior}>Mapa</Text>
-                    <Icon name = 'pin-drop' size = {30} color= "#000000"/>
+                    <Icon name = 'pin-drop' size = {24} color= "#000000"/>
                 </BotaoInferiorEsquerdo>
-                <BotaoInferiorDireito>
-                    <Text style = {Textos.TextoInferior}>190</Text>
-                    <Icon name = 'local-hospital' size = {30} color= "#000000"/>
+                <BotaoInferiorDireito onPress={() => navigation.navigate('Emergencia')}>
+                    <Text style = {Textos.TextoInferior}>192</Text>
+                    <Icon name = 'local-hospital' size = {24} color= "#000000"/>
                 </BotaoInferiorDireito>
             </View>
+
             
         </Container>
     );
@@ -83,17 +70,17 @@ export const ButtonsView = ({nomeIconeEsquerdo, texto, onPress}) => {
 
 export const BotaoInferiorDireito = styled.TouchableOpacity`
     height: 60px;
-    width: 70px;
+    width: 60px;
     background-color: #FFFFFF;
-    border-radius: 10px;
+    border-radius: 30px;
     justify-content: center;
     align-items: center;
 `;
 export const BotaoInferiorEsquerdo = styled.TouchableOpacity`
     height: 60px;
-    width: 70px;
+    width: 60px;
     background-color: #FFFFFF;
-    border-radius: 10px;
+    border-radius: 30px;
     justify-content: center;
     align-items: center;
 `;
@@ -123,7 +110,7 @@ export const Textos = StyleSheet.create({
     TextoInferior: {
         fontFamily: 'Century-Gothic', 
         color: '#000000',
-        fontSize: 15, 
+        fontSize: 13, 
         paddingHorizontal: 10
     }
 });
