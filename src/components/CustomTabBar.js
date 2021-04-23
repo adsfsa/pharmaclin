@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
-
+import { Image } from "react-native";
 import { UserContext } from '../contexts/UserContext'
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -25,25 +26,50 @@ const TabItemCenter = styled.TouchableOpacity`
     border: 3px solid #FFFFFF;
     margin-top: -35px;
 `;
-//backgound-color: #4A989F;
-const AvatarIcon = styled.Image`
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-`;
 
 export default ({state, navigation}) => {
     const { state:user } = useContext(UserContext);
+    const {dispatch: userDispatch} = useContext(UserContext);
+    const [avatarIcon, setAvatarIcon] = useState('null');
+
+    useEffect(()=> {
+        async function carregarAvatar(){
+           const avatar = await AsyncStorage.getItem("avatar");
+           if (avatar) {
+                setAvatarIcon(avatar);
+           }
+        }
+        carregarAvatar();
+    } ,[]);
+
+    useEffect(()=> {
+        async function atualizarAvatar(){
+            if (avatarIcon) {
+                await AsyncStorage.setItem('avatar', avatarIcon)
+                userDispatch({
+                    type: 'setAvatar',
+                    payload: {
+                        avatar: avatarIcon
+                    } 
+                });                
+            }
+        }
+        atualizarAvatar();
+
+    } ,[avatarIcon]);
+
 
     const goTo = (screenName) => {
-        navigation.navigate(screenName);
+        navigation.reset({
+            routes: [{name: screenName}]
+        });
 
     }
 
     return (
         <TabArea>
             <TabItem onPress={()=>goTo('Configuracoes')} >
-                <MaterialIcons name="settings" border="blue" size={30} color={state.index===0? "#FE7F57" : "#B2B2B2"} />
+                <MaterialIcons name="settings" size={30} color={state.index===0? "#FE7F57" : "#B2B2B2"} />
             </TabItem>
 
             <TabItem onPress={()=>goTo('Mapa')} >
@@ -62,8 +88,8 @@ export default ({state, navigation}) => {
             </TabItem>
 
             <TabItem onPress={()=>goTo('Perfil')} >
-                {user.avatar != '' ?
-                    <AvatarIcon source={{uri: user.avatar}} />
+                {avatarIcon != null && avatarIcon != 'null' ?
+                    <Image source={{uri: avatarIcon}} style ={{height: 30, width: 30, borderRadius: 15, borderWidth: 3, borderColor: state.index===4? "#FE7F57" : "#B2B2B2"}} />
                     :
                     <MaterialIcons name="account-circle" size={30} color={state.index===4? "#FE7F57" : "#B2B2B2"} />
                 }
@@ -71,4 +97,3 @@ export default ({state, navigation}) => {
         </TabArea>
     );
 }
-//< size={24} color="black" />

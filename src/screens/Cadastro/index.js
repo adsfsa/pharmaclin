@@ -1,42 +1,42 @@
 import React, { useState, useContext } from 'react';
-import { Alert, Text } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { UserContext } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Container, InputContainer, BtnDestaque, TextStyles, InputSenha, InputObrigatorio, TopoPadrao,customLInk} from '../../components/Components'; //Componentes "repetitivos", criados em Components
+import { Container, InputContainer, BtnDestaque, TextStyles, InputSenha, InputObrigatorio, TopoPadrao} from '../../components/Components'; //Componentes "repetitivos", criados em Components
 
 export default () => {
     const navigation = useNavigation();
-    const [user, setUser] = useState ({id: 1, Nome: '', Email: '', Senha:''});
-    const [Nome, setNome] = useState ('');
-    const [Email, setEmail] = useState ('');
-    const [Senha, setSenha] = useState ('');
-    //#const [id, setId] = useState (2);
-    var id = 1;
+    const [nome, setNome] = useState ('');
+    const [email, setEmail] = useState ('');
+    const [senha, setSenha] = useState ('');
     
     const {dispatch: userDispatch} = useContext(UserContext);
     
     const Cadastrar = async() => {
-        if(Nome!=='' && Email !=='' && Senha !== ''){    
-            const usuario = {id: id++, Nome: Nome, Email: Email, Senha: Senha};
-            setUser(usuario);
-            var userString = JSON.stringify(usuario);
-            if(AsyncStorage.getItem('usuario') !== ''){
-                await AsyncStorage.setItem('usuario', userString);
+        var id = '2';
+        if(nome!=='' && email !=='' && senha !== ''){ 
+            const getEmail = await AsyncStorage.getItem('email');
+            if (getEmail !== email) {                
+                let userChaves= [['id', id], ['nome', nome.toUpperCase()], ['email', email], ['senha', senha]];
+                await AsyncStorage.multiSet(userChaves);
                 userDispatch({
                     type: 'setLogin',
                     payload: {
-                        id: usuario.id,
-                        nome: usuario.Nome,
-                        email: usuario.Email,
-                        senha: usuario.Senha
+                        id: id,
+                        nome: nome.toUpperCase(),
+                        email: email,
+                        senha: senha
                     } 
                 });
-                alert('Bem Vindo!');
-                navigation.reset({ routes: [{name: 'MainTab'}] })
+                alert(`Bem Vindo ${nome.toUpperCase()}!`);
+                console.log(getEmail);
+                navigation.reset({ routes: [{name: 'MainTab'}] });
+            } else {
+                alert('O email informado já está cadastrado.')
             }
-                      
-        } else{
+            
+        } else {
             alert('Preencha os campos!');
         }
 
@@ -50,39 +50,40 @@ export default () => {
 
     return (
         <Container>
-            <TopoPadrao setaVoltar={Voltar} size={24} />
-            <InputContainer >
-                <InputObrigatorio
-                    placeholder="Digite seu nome*"
-                    leftIcon = "person"
-                    keyboardType = "default"
-                    autoCompleteType = {'username'}
-                    value = {Nome}
-                    onChangeText = {Nome => setNome(Nome)}
-                />
-                <InputObrigatorio
-                    placeholder="Digite seu email*"
-                    leftIcon = "email"
-                    keyboardType = "email-address"
-                    autoCompleteType = {'email'}
-                    value = {Email}
-                    onChangeText = {Email => setEmail(Email)}
-                />
-                <InputSenha
-                    placeholder="Crie uma senha*"
-                    leftIcon = "lock"
-                    autoCompleteType = {'password'}
-                    value = {Senha}
-                    onChangeText = {Senha => setSenha(Senha)}
-                />
+            <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
+                <TopoPadrao setaVoltar={Voltar} size={24} />
+                <InputContainer >
+                    <InputObrigatorio
+                        placeholder="Digite seu nome*"
+                        leftIcon = "person"
+                        keyboardType = "default"
+                        autoCompleteType = {'username'}
+                        value = {nome}
+                        onChangeText = {nome => setNome(nome)}
+                    />
+                    <InputObrigatorio
+                        placeholder="Digite seu email*"
+                        leftIcon = "email"
+                        keyboardType = "email-address"
+                        autoCompleteType = {'email'}
+                        value = {email}
+                        onChangeText = {email => setEmail(email)}
+                    />
+                    <InputSenha
+                        placeholder="Crie uma senha*"
+                        leftIcon = "lock"
+                        autoCompleteType = {'password'}
+                        value = {senha}
+                        onChangeText = {senha => setSenha(senha)}
+                    />
 
-                <BtnDestaque onPress= {Cadastrar} >
-                    <Text style={TextStyles.BtnDestaqueText}>
-                        CADASTRAR
-                    </Text>
-                </BtnDestaque>
-            </InputContainer>
-
+                    <BtnDestaque onPress= {()=>Cadastrar()} >
+                        <Text style={TextStyles.BtnDestaqueText}>
+                            CADASTRAR
+                        </Text>
+                    </BtnDestaque>
+                </InputContainer>
+            </View>
         </Container>
     );
 }

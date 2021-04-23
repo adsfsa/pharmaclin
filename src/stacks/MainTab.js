@@ -8,6 +8,7 @@ import Mapa from '../screens/Mapa';
 import Home from '../screens/Home';
 import Emergencia from '../screens/Emergencia';
 import Perfil from '../screens/Perfil';
+import PerfilStack from './PerfilStack';
 
 import Lembretes from '../screens/Lembretes';
 import NovaCompra from '../screens/NovaCompra';
@@ -24,7 +25,7 @@ export default () => (
         <Tab.Screen name="Mapa" component={Mapa} />
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Emergencia" component={Emergencia} />
-        <Tab.Screen name="Perfil" component={Perfil} />
+        <Tab.Screen name="Perfil" component={PerfilStack} />
 
         <Tab.Screen name="Lembretes" component={Lembretes} />
         <Tab.Screen name="NovaCompra" component={NovaCompra} />
