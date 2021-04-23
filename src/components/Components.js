@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Container = styled.SafeAreaView`
     background-color: #00BACD;
-    flex: 1;
+    flex: 1;    
     justify-content: center;
     align-items: center; 
 `;
@@ -38,20 +38,66 @@ export const TopoPadrao = ({setaVoltar, size}) =>{
         </TopContainer>
     );
 }
-export const TopoInterno = ({IconeCentral}) =>{
+export const TopHome = ({nomeIconeEsquerdo, setaVoltar, nomeArea}) =>{
+    return(
+        <View style={{width:'100%'}}>
+            <TopContainer>
+                <Icon
+                    name='arrow-back'
+                    color='#FFFFFF'
+                    onPress = {setaVoltar}
+                    size = {24}
+                />
+                <View >
+                    <PharmaClinLogo100x100 />
+                </View>
+                <Icon
+                    name='arrow-back'
+                    color='#00BACD'
+                    size = {24}
+                />
+            </TopContainer>
+            <View style={{width:'100%', paddingHorizontal: 40, marginTop: 15}}>
+                <ViewArea>
+                    <View style = {{paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center'}}>
+                        <Icon name = {nomeIconeEsquerdo} size = {24} color= "#FE7F57"/>
+                        <Text style={{fontFamily: 'Century-Gothic', color: '#000000', fontSize: 15,paddingHorizontal: 10}}>
+                            {nomeArea}
+                        </Text>
+                     </View>
+                </ViewArea>
+            </View>
+        </View>
+    );
+}
+export const ViewArea = styled.View`
+    height: 40px;    
+    background-color: #FFFFFF;
+    align-items: center;
+    border-radius: 20px;
+    flexDirection: row;
+    justify-content: space-between;
+    margin-vertical: 10px;
+`;
+
+export const TopoInterno = ({IconeCentral, setaVoltar}) =>{
     return(
         <TopContainer>
             <Icon
                 name='arrow-back'
                 color='#FFFFFF'
+                onPress = {setaVoltar}
+                size = {24}
             />
             <Icon
                 name= {IconeCentral}
                 color='#FFFFFF'
+                size = {50}
             />
             <Icon
                 name='arrow-back'
                 color='#00BACD'
+                size = {24}
             />
         </TopContainer>
     );
@@ -120,9 +166,9 @@ export const CustomCheckBox = ({title, checkedIcon, uncheckedIcon}) => {
 }
 export const CustomLInk = ({onPress, Texto}) => {
     return (
-        <TouchableOpacity style={Link} onPress= {onPress} >
+        <TouchableOpacity style={{Link}} onPress= {onPress} >
                 <Text style={TextStyles.LinkText}>
-                    "Texto"
+                    {Texto}
                 </Text>
         </TouchableOpacity>
     )
@@ -155,7 +201,7 @@ export const TextStyles = StyleSheet.create({
     baseText: {
       fontFamily: "Century-Gothic",
       color: '#000000',
-      fontSize: 12,
+      fontSize: 15,
     },
     preloadText: {
         fontFamily: "Century-Gothic",
