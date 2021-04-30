@@ -16,17 +16,12 @@ const styles = StyleSheet.create({
 export default () => {
     const inputInformacaoAdicional = useRef(null);
 
-    const inputAtualizacaoAtivo = useRef(null);
-    const inputAtualizacaoInativo = useRef(null);
-
     const [informacoesAdicionais, setInformacoesAdicionais] = useState([]);
     const [novaInformacaoAdicional, setNovaInformacaoAdicional] = useState("");
     const [informacaoEditavel, setInformacaoEditavel] = useState(false);
-
-    const [atualizando, setAtualizando] = useState(false);
     const [selecionado, setSelecionado] = useState(null);
 
-    const InformacaoAdicional = ({item, onPress, backgroundColor, editarInformacaoAdicional, removerInformacaoAdicional}) => {
+    const InformacaoAdicional = ({item, backgroundColor, editarInformacaoAdicional, removerInformacaoAdicional}) => {
         const [novaAtualizacao, setNovaAtualizacao] = useState("");
         return (
             <Informacao style={{marginBottom: 15}}>
@@ -252,11 +247,6 @@ export default () => {
         </Container>
     );
 };
-
-
-
-
-
 export const Scroller = styled.ScrollView`
     flex: 1;
     padding: 20px;
