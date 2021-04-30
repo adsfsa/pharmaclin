@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { UserContext } from '../../contexts/UserContext';
-import { FlatList, Alert, Text, TouchableWithoutFeedback, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Keyboard, TextComponent, Modal, Image, Switch } from 'react-native';
+import { FlatList, Alert, Text, TouchableWithoutFeedback, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Keyboard, TextComponent, Modal, Image, Switch, LogBox } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ export default () => {
            }
         }
         carregarConsultas();
+        LogBox.ignoreAllLogs();
     } ,[]);
 
     const [arrayConsultas, setArrayConsultas] = useState([])
@@ -158,7 +159,7 @@ export default () => {
     }
     const FinalizarConsulta = () => {
         if(consulta.servico===""){
-            Alert.alert("ERRO!", "Você não seleionou nenhum serviço");
+            Alert.alert("ERRO!", "Você não selecionou nenhum serviço");
             return;
         }
         else{
@@ -392,7 +393,7 @@ export default () => {
                                                 {
                                                     text: "Sim",
                                                     onPress: ()=>{
-                                                        navigation.reset({routes: [{name: 'NovaCompra'}]});
+                                                        navigation.reset({routes: [{name: 'NovaConsulta'}]});
                                                     }
                                                 },
                                                 {

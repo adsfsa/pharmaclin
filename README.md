@@ -1,5 +1,5 @@
 # Projeto PharmaClin
-Projeto aplicando React-Native, idealizado desde o primeiro semestre, com potencial para se tornar um sistema nacional futuramente.
+Projeto aplicando React-Native, idealizado desde o primeiro semestre, com potencial para se tornar um sistema nacional futuramente. Vídeo Explicativo: https://drive.google.com/drive/folders/1veELcbBJh_sfAayKZ760mysIm7NG0v-y?usp=sharing
 ## Curiosidades
   * Projeto desenvolvido com o Expo Bare Workflow (Saiba mais em https://www.youtube.com/watch?v=ZaDpDlPr25M&t=1236s) para permitir acesso direto às permissões Android e IOS.
   * Vídeos introdutórios/inspiradores: https://www.youtube.com/watch?v=kk_pGWBOkc4&t=9886s , https://www.youtube.com/watch?v=wdvxNgGV0sU&t=358s , https://www.youtube.com/watch?v=abvpbrwd6ek
@@ -9,11 +9,11 @@ Projeto aplicando React-Native, idealizado desde o primeiro semestre, com potenc
   * O app tem uma tela Preload que verifica as informações do usuário (se o usuário já fez login uma vez, o sistema sempre reconecta ele automaticamente, mas se nenhum login for encontrado o sistema redireciona para o Login/Cadastro). A exibição desta tela é muito rápida, sendo até imperceptível talvez, mas ainda assim ela existe e tem sua função bem definida;
   * Na primeira vez com o app, obviamente você não terá uma conta cadastrada, e portanto deve entrar com Cadastro. Para testar se o Login funciona com seu novo cadastro, acesse prefil e toque em Sair. Para testar o Login pela primeira vez, por curiosidade ou teste entre com os dados fixos do admin (Email: admin@admin.com  Senha: 1234). A conta admin não é excluída permanentemente pois ela é fixa (Você pode entrar com ela, mexer em tudo, mas ao "Excluir Conta" apenas sua asyncstorage será resetada, permitindo o Login com o mesmo admin);
   * O projeto foi projetado para funcionamento mobile. Alguns comandos e escolhas nos código existem para permitir visualizações prévias na web (por exemplo: a escolha do alert() em vez do Alert.alert() em Login e Cadastro, para permitir que o server web também consiga entrar no app), mas isso não significa que o projeto funcione 100% na web. A sua experiência será melhor acessando pelo ExpoGo ou por um emulador.
-## Participantes
-  * Gileade Teixeira;
-  * Ramon Oliveira;
-  * Sergio Pimentel;
-  * Alexsandro Araujo;
+## Participantes/Fundadores
+  * Gileade Teixeira - https://github.com/gileadeteixeira;
+  * Ramon Oliveira - https://github.com/im-ramon;
+  * Sergio Pimentel - https://github.com/srochapimentel;
+  * Alexsandro Araujo - https://github.com/alexsaraujo1;
   * Deyse Guedes (não está cursando a disciplina, mas faz parte da equipe fundadora);
   * "adsfsa" é apenas fictício, para armazenar o projeto.
 ## Home, Barra de Navegação e Components
