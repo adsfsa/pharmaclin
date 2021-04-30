@@ -15,7 +15,7 @@ export default () => {
             <View style = {{alignSelf: 'center', marginTop: 60}}>
                 <PharmaClinLogo100x100 />
             </View>
-            <View style={{flex: 1, width: '100%', padding: 20}}>
+            <View style={{flex: 1, width: '100%', paddingHorizontal: 20, marginTop: 10}}>
                 <View style={{flex: 1, width:'100%', padding: 10}}>
                     <ButtonsView nomeIconeEsquerdo = "notifications-active" texto = "LEMBRETES"
                         onPress={() => navigation.navigate('Lembretes')}/>
@@ -37,14 +37,14 @@ export default () => {
                 </View>
             </View>
             <View style = {{padding: 30, flexDirection: 'row', justifyContent:'space-between', width: '100%'}} >
-                <BotaoInferiorEsquerdo onPress={() => navigation.navigate('Mapa')}>
+                <BotaoRedondo onPress={() => navigation.navigate('Mapa')}>
                     <Text style = {Textos.TextoInferior}>Mapa</Text>
                     <Icon name = 'pin-drop' size = {24} color= "#000000"/>
-                </BotaoInferiorEsquerdo>
-                <BotaoInferiorDireito onPress={() => navigation.navigate('Emergencia')}>
+                </BotaoRedondo>
+                <BotaoRedondo onPress={() => navigation.navigate('Emergencia')}>
                     <Text style = {Textos.TextoInferior}>192</Text>
                     <Icon name = 'local-hospital' size = {24} color= "#000000"/>
-                </BotaoInferiorDireito>
+                </BotaoRedondo>
             </View>
 
             
@@ -68,21 +68,14 @@ export const ButtonsView = ({nomeIconeEsquerdo, texto, onPress}) => {
     )
 }
 
-export const BotaoInferiorDireito = styled.TouchableOpacity`
+export const BotaoRedondo = styled.TouchableOpacity`
     height: 60px;
     width: 60px;
     background-color: #FFFFFF;
     border-radius: 30px;
     justify-content: center;
     align-items: center;
-`;
-export const BotaoInferiorEsquerdo = styled.TouchableOpacity`
-    height: 60px;
-    width: 60px;
-    background-color: #FFFFFF;
-    border-radius: 30px;
-    justify-content: center;
-    align-items: center;
+    elevation: 10;
 `;
 
 export const Scroller = styled.ScrollView`

@@ -386,7 +386,7 @@ export default () => {
             <TouchableWithoutFeedback style={{flex: 1}} onPress={() => Keyboard.dismiss()} accessible={false}>
                 <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
                     <TopoInterno IconeCentral ={'person'} setaVoltar = {()=>Voltar()}/>
-                    <View style={{width: '100%', paddingHorizontal: 40, marginTop: 15}}>
+                    <View style={{width: '100%', paddingHorizontal: 40, marginTop: 10}}>
                         <AdicionarFoto onPress = {()=>EscolherAvatar()} >
                             <Text style={{fontFamily: 'Century-Gothic', color: '#000000'}}>
                                 {"Adicionar foto"}
@@ -395,7 +395,7 @@ export default () => {
                         </AdicionarFoto>                    
                         <View
                             style = {{alignSelf: 'stretch', marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-                            backgroundColor: nomeEditavel === true? 'white' : 'transparent', marginTop: 20}}
+                            backgroundColor: nomeEditavel === true? 'white' : 'transparent', marginTop: 10}}
                         >
                             <Text style={{fontFamily: 'Century-Gothic', color: '#000000'}}>
                                 {"Nome: "}
@@ -491,8 +491,8 @@ export default () => {
                         
                     </View>
                     <Scroller>
-                        <View style = {{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
-                            <Text style={{fontFamily: 'Century-Gothic', color: '#000000', marginBottom: 10}}>
+                        <View style = {{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', marginBottom: 30}}>
+                            <Text style={{fontFamily: 'Century-Gothic', color: '#000000'}}>
                                 {novoAvatar!==null && novoAvatar!=='null'? "Sua nova foto:"
                                 : (avatar!==null && avatar!=='null'? "Sua foto atual:"
                                     : "Adicione uma foto e ela aparecerá aqui.")
@@ -503,13 +503,13 @@ export default () => {
                                     <Image source={{uri: novoAvatar!==null && novoAvatar!=='null' ? novoAvatar 
                                             : (avatar!==null && avatar!=='null' ? avatar : null)}
                                         }
-                                        style={{width: 100, height: 100, borderRadius: 50}} 
+                                        style={{width: 100, height: 100, borderRadius: 50, margin: 10}} 
                                     />
                                 :
                                     <Icon name='face' size={100} color = "#4A989F" />
                             }
                             {(avatar!==null && avatar!=='null') &&
-                                <TouchableOpacity style={{marginTop: 20}} onPress={()=>RemoverAvatar()}>
+                                <TouchableOpacity onPress={()=>RemoverAvatar()}>
                                     <Text style={{fontFamily: 'Century-Gothic', color: '#000000', fontSize: 12}}>
                                         Remover foto
                                     </Text>
@@ -521,7 +521,7 @@ export default () => {
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
                 <View 
-                    style = {{width: '100%', padding: 40}} 
+                    style = {{width: '100%', paddingHorizontal: 40, paddingBottom: 40}} 
                 >
                     <BtnDestaque onPress={ () => Salvar() }>
                         <Text style={TextStyles.baseText} >

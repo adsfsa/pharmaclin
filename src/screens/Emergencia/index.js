@@ -10,15 +10,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default () => {
     const navigation = useNavigation();
-    const  Voltar = () => {
-        navigation.reset({
-            routes: [{name: 'Perfil'}]
-        });
-    }
     return (
         <Container>
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
-                <Icon name='local-hospital' size={50} color = "#FFFFFF" />
+                <View style={{width: 100, height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                    <Icon name='local-hospital' size={50} color = "#FFFFFF" />
+                </View>
             </View>
         </Container>
     );

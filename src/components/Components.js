@@ -57,7 +57,7 @@ export const TopHome = ({nomeIconeEsquerdo, setaVoltar, nomeArea}) =>{
                     size = {24}
                 />
             </TopContainer>
-            <View style={{width:'100%', paddingHorizontal: 40, marginTop: 15}}>
+            <View style={{width:'100%', paddingHorizontal: 30, marginTop: 10}}>
                 <ViewArea>
                     <View style = {{paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center'}}>
                         <Icon name = {nomeIconeEsquerdo} size = {24} color= "#FE7F57"/>
@@ -89,11 +89,13 @@ export const TopoInterno = ({IconeCentral, setaVoltar}) =>{
                 onPress = {setaVoltar}
                 size = {24}
             />
-            <Icon
-                name= {IconeCentral}
-                color='#FFFFFF'
-                size = {50}
-            />
+            <View style={{width: 100, height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                <Icon
+                    name= {IconeCentral}
+                    color='#FFFFFF'
+                    size = {50}
+                />
+            </View>
             <Icon
                 name='arrow-back'
                 color='#00BACD'
@@ -198,6 +200,26 @@ export const BtnNormal = styled.TouchableOpacity`
     align-items: center;     
 `;
 export const TextStyles = StyleSheet.create({
+    SelectionText: {
+      fontFamily: "Century-Gothic",
+      color: '#000000',
+    },
+    SearchText: {
+      fontFamily: "Century-Gothic",
+      color: '#000000',
+      fontSize: 10,
+    },
+    PriceText: {
+      fontFamily: "Century-Gothic",
+      color: '#000000',
+      fontSize: 20,
+      paddingVertical: 10,
+    },
+    ListText: {
+      fontFamily: "Century-Gothic",
+      color: '#000000',
+      fontSize: 12,
+    },
     baseText: {
       fontFamily: "Century-Gothic",
       color: '#000000',

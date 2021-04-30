@@ -132,10 +132,13 @@ export default () => {
         <Container>
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
                 <View style={{marginBottom: 15, alignItems: 'center', width: '100%', justifyContent: 'center'}}>
-                    {avatar != null && avatar != 'null'?
-                    <Image source={{uri: avatar}} style={{width: 50, height: 50, borderRadius: 25}}/>
-                    :
-                    <Icon name='account-circle' size={50} color = "#FFFFFF" />
+                    {avatar != null && avatar != 'null'
+                        ?
+                            <Image source={{uri: avatar}} style={{width: 100, height: 100, borderRadius: 50}}/>
+                        :
+                            <View style={{width: 100, height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                                <Icon name='account-circle' size={50} color = "#FFFFFF" />
+                            </View>
                     }
                 </View>
                 <View style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>

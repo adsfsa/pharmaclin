@@ -207,7 +207,7 @@ export default () => {
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
                 <TopoInterno IconeCentral ={'format-list-bulleted'} setaVoltar = {Voltar}/>
                 <FlatList
-                    style={{flex: 1, width: '100%', paddingHorizontal: 40, marginTop: 15}}
+                    style={{flex: 1, width: '100%', paddingHorizontal: 20, marginTop: 10}}
                     data={informacoesAdicionais}
                     extraData={selecionado}
                     keyExtractor={item => item.toString()}
@@ -215,7 +215,7 @@ export default () => {
                     renderItem={renderItem}
                 />
                 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-                    <View style = {{width: '100%', paddingHorizontal: 40, paddingBottom: 40, paddingTop: 15}}>
+                    <View style = {{width: '100%', paddingHorizontal: 40, paddingBottom: 40, paddingTop: 10}}>
                             <AdicionarInformacao >
                                 <TextInput
                                     style = {{flex: 1}}
@@ -261,7 +261,7 @@ export const Informacao = styled.View`
     background-color: #EEEEEE;
     border-radius: 10px;
     justify-content: space-between;
-    align-self: stretch
+    width: 100%;
     align-items: center;
     flex-direction: row;
     padding-horizontal: 20px;
