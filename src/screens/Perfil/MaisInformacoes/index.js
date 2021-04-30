@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { UserContext } from '../../../contexts/UserContext';
-import { FlatList, Alert, Text, TouchableWithoutFeedback, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Keyboard, TextComponent } from 'react-native';
+import { FlatList, Alert, Text, TouchableWithoutFeedback, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Keyboard, TextComponent, LogBox, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -170,6 +170,7 @@ export default () => {
            }
         }
         carregarInformacoesAdicionais();
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     } ,[]);
 
     useEffect(()=> {
@@ -205,43 +206,48 @@ export default () => {
     return (
         <Container>
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
-                <TopoInterno IconeCentral ={'format-list-bulleted'} setaVoltar = {Voltar}/>
-                <FlatList
-                    style={{flex: 1, width: '100%', paddingHorizontal: 20, marginTop: 10}}
-                    data={informacoesAdicionais}
-                    extraData={selecionado}
-                    keyExtractor={item => item.toString()}
-                    showsVerticalScrollIndicator = {true}
-                    renderItem={renderItem}
-                />
-                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-                    <View style = {{width: '100%', paddingHorizontal: 40, paddingBottom: 40, paddingTop: 10}}>
-                            <AdicionarInformacao >
-                                <TextInput
-                                    style = {{flex: 1}}
-                                    ref = {inputInformacaoAdicional}
-                                    textStyle = {{fontFamily: 'Century-Gothic', color: '#000000'}}
-                                    placeholder = {informacaoEditavel? "": "Toque para adicionar"}
-                                    placeholderTextColor = '#000000'
-                                    value = {novaInformacaoAdicional}
-                                    maxLength = {60}
-                                    selectTextOnFocus = {true}
-                                    onChangeText = {informacaoAdicional => setNovaInformacaoAdicional(informacaoAdicional)}
-                                    onFocus = {()=> {setInformacaoEditavel(true)}}
-                                    onBlur = {()=> {setInformacaoEditavel(false)}}
-                                />
-                                {informacaoEditavel &&
-                                    <TouchableOpacity
-                                        style = {{marginHorizontal: 5}}
-                                        onPress={()=>addInformacaoAdicional()}
-                                    >
-                                        <Icon name='add-circle-outline' size={24} color = "#000000" />
-                                    </TouchableOpacity>                            
-                                }
 
-                            </AdicionarInformacao>
-                    </View>
-                </TouchableWithoutFeedback>
+                <TopoInterno IconeCentral ={'format-list-bulleted'} setaVoltar = {Voltar}/>
+
+                <ScrollView style={{width: '100%'}}>
+
+                    <FlatList
+                        style={{flex: 1, width: '100%', paddingHorizontal: 20, marginTop: 10}}
+                        data={informacoesAdicionais}
+                        extraData={selecionado}
+                        keyExtractor={item => item.toString()}
+                        showsVerticalScrollIndicator = {true}
+                        renderItem={renderItem}
+                    />
+
+                    <View style = {{width: '100%', paddingHorizontal: 40, paddingBottom: 40, paddingTop: 10}}>
+
+                        <AdicionarInformacao >
+                            <TextInput
+                                style = {{flex: 1}}
+                                ref = {inputInformacaoAdicional}
+                                textStyle = {{fontFamily: 'Century-Gothic', color: '#000000'}}
+                                placeholder = {informacaoEditavel? "": "Toque para adicionar"}
+                                placeholderTextColor = '#000000'
+                                value = {novaInformacaoAdicional}
+                                maxLength = {60}
+                                selectTextOnFocus = {true}
+                                onChangeText = {informacaoAdicional => setNovaInformacaoAdicional(informacaoAdicional)}
+                                onFocus = {()=> {setInformacaoEditavel(true)}}
+                                onBlur = {()=> {setInformacaoEditavel(false)}}
+                            />
+                            
+                            <TouchableOpacity
+                                style = {{marginHorizontal: 5}}
+                                onPress={()=>addInformacaoAdicional()}
+                            >
+                                <Icon name='add' size={24} color = "#000000" />
+                            </TouchableOpacity>                            
+                            
+                        </AdicionarInformacao>
+                    </View>  
+
+                </ScrollView>
             </View>
         </Container>
     );

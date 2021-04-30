@@ -4,35 +4,40 @@ export const farmacias = [
         "nome": "Farmácia Pague Menos - Av. João Durval",
         "latitude" : "-12.241197632955549",
         "longitude": "-38.94665556091274",
-        "produtos":[1,2,3,4,5]
+        "produtos":[1,2,3,4,5],
+        "servicos":[1,2,3,4,5]
     },
     {
         "id": 2,
         "nome": "Farmácia Brito - Av. João Durval",
         "latitude" : "-12.245535657939685",
         "longitude": "-38.948098086044624",
-        "produtos":[6, 7, 8, 9, 10]
+        "produtos":[6, 7, 8, 9, 10],
+        "servicos":[3,4,5]
     },
     {
         "id": 3,
         "nome": "Drogaria São Paulo - Av. Getúlio Vargas",
         "latitude" : "-12.254903284104154",
         "longitude": "-38.961917592640766",
-        "produtos":[ 1,2,3,4,5,6,7,8,9,10]
+        "produtos":[ 1,2,3,4,5,6,7,8,9,10],
+        "servicos":[1,2,3]
     },
     {
         "id": 4,
         "nome": "Farmácia Silva - Av. Senhor dos Passos",
         "latitude" : "-12.254479825756436",
         "longitude": "-38.96526160324047",
-        "produtos":[4,5,6,7,8,9,10]
+        "produtos":[4,5,6,7,8,9,10],
+        "servicos":[1,2,3,4,5]
     },
     {
         "id": 5,
         "nome": "Drogasil - Av. Maria Quitéria",
         "latitude" : "-12.252050626681065",
         "longitude": "-38.95417450535178",
-        "produtos":[1,2,3,4,5,6]
+        "produtos":[1,2,3,4,5,6],
+        "servicos":[1,3,5]
     }
 ];
 export const produtos = [
@@ -135,5 +140,27 @@ export const produtos = [
         "unidades": 5,
         "disponivel": true,
         "comprados": 0,
+    }
+];
+export const servicos = [
+    {
+        "id": 1,
+        "nome": "Medir Pressão Arterial"
+    },
+    {
+        "id": 2,
+        "nome": "Monitoramento da Glicemia"
+    },
+    {
+        "id": 3,
+        "nome": "Aplicação de Medicamento"
+    },
+    {
+        "id": 4,
+        "nome": "Exame Preliminar"
+    },
+    {
+        "id": 5,
+        "nome": "Aplicação de Curativos"
     }
 ];
