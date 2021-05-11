@@ -20,7 +20,7 @@ export const farmacias = [
         "nome": "Drogaria São Paulo - Av. Getúlio Vargas",
         "latitude" : "-12.254903284104154",
         "longitude": "-38.961917592640766",
-        "produtos":[ 1,2,3,4,5,6,7,8,9,10],
+        "produtos":[1,2,3,4,5,6,7,8,9,10],
         "servicos":[1,2,3]
     },
     {
@@ -45,7 +45,7 @@ export const produtos = [
         "id": 1,
         "nome": "Roacutan",
         "imagem": "https://paguemenos.vtexassets.com/arquivos/ids/257852-800-auto?width=800&height=auto&aspect=true",
-        "descricao": "Roacutan 20 Mg Cápsulasulas Com 30",
+        "descricao": "Roacutan 20 Mg Cápsulas Com 30",
         "preco": 241.68,
         "unidades": 5,
         "disponivel": true,

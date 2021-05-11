@@ -1,140 +1,51 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Alert, Text, View, StyleSheet, Image } from 'react-native';
-import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Container,BtnDestaque, TextStyles, BtnNormal, CustomLInk } from '../../components/Components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext } from '../../contexts/UserContext';
+import Api from '../../Api'
 
 
 export default () => {
     const navigation = useNavigation();
-    const [usuario, setUsuario] = useState({});
 
-    const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [avatar, setAvatar] = useState('null');
-
-
-    const { state:user } = useContext(UserContext);
+    const {state: user} = useContext(UserContext);
     const {dispatch: userDispatch} = useContext(UserContext);
-    
-    useEffect(()=> {
-        async function carregarAvatar(){
-           const nome = await AsyncStorage.getItem("nome");
-           if (nome) {
-                setNome(nome);
-           }
-        }
-        carregarAvatar();
-    } ,[]);
 
     useEffect(()=> {
-        async function carregarAvatar(){
-           const email = await AsyncStorage.getItem("email");
-           if (email) {
-                setEmail(email);
-           }
-        }
-        carregarAvatar();
-    } ,[]);
+        Api.carregarAvatar(userDispatch);
+        Api.carregarNome(userDispatch);
+        Api.carregarEmail(userDispatch);       
+    } ,[]);    
 
     useEffect(()=> {
-        async function carregarAvatar(){
-           const senha = await AsyncStorage.getItem("senha");
-           if (senha) {
-                setSenha(senha);
-           }
-        }
-        carregarAvatar();
-    } ,[]);
+        Api.atualizarAvatar(user.avatar);
+    } ,[user.avatar]);
 
     useEffect(()=> {
-        async function carregarAvatar(){
-           const avatar = await AsyncStorage.getItem("avatar");
-           if (avatar) {
-                setAvatar(avatar);
-           }
-        }
-        carregarAvatar();
-    } ,[]);
+        Api.atualizarNome(user.nome);        
+    } ,[user.nome]);
 
     useEffect(()=> {
-        async function atualizarAvatar(){
-            if (avatar) {
-                await AsyncStorage.setItem('avatar', avatar)
-                userDispatch({
-                    type: 'setAvatar',
-                    payload: {
-                        avatar: avatar
-                    } 
-                });                
-            }
-        }
-        atualizarAvatar();
+        Api.atualizarEmail(user.email);
+    } ,[user.email]);
 
-    } ,[avatar]);
+    const Sair = () =>{
+        Api.sair(userDispatch);  
+    }
 
-    useEffect(()=> {
-        async function atualizarNome(){
-            if (nome) {
-                await AsyncStorage.setItem('nome', nome)
-                userDispatch({
-                    type: 'setNome',
-                    payload: {
-                        nome: nome
-                    } 
-                });   
-            }
-        }
-        atualizarNome();
-    } ,[nome]);
-
-    useEffect(()=> {
-        async function atualizarEmail(){
-            if (email) {
-                await AsyncStorage.setItem('email', email)
-                userDispatch({
-                    type: 'setEmail',
-                    payload: {
-                        email: email
-                    } 
-                });   
-            }
-        }
-        atualizarEmail();
-    } ,[email]);
-
-    useEffect(()=> {
-        async function atualizarSenha(){
-            if (senha) {
-                await AsyncStorage.setItem('senha', senha)
-                userDispatch({
-                    type: 'setSenha',
-                    payload: {
-                        senha: senha
-                    } 
-                });   
-            }
-        }
-        atualizarSenha();
-    } ,[senha]);
-
-
-    const ExcluirConta = async() =>{//apaga todas os dados salvos na async
-        await AsyncStorage.getAllKeys((error,keys)=>AsyncStorage.multiRemove(keys));
-        navigation.reset({ routes: [{name: 'Login'}] })
+    const ExcluirConta = async () =>{
+        Api.excluirConta(user.senha, userDispatch);               
     }
 
     return (
         <Container>
             <View style={{flex: 1, width: '100%', marginTop: 60, alignItems: 'center'}} >
                 <View style={{marginBottom: 15, alignItems: 'center', width: '100%', justifyContent: 'center'}}>
-                    {avatar != null && avatar != 'null'
+                    {user.avatar !== ''
                         ?
-                            <Image source={{uri: avatar}} style={{width: 100, height: 100, borderRadius: 50}}/>
+                            <Image source={{uri: user.avatar}} style={{width: 100, height: 100, borderRadius: 50}}/>
                         :
                             <View style={{width: 100, height: 100, justifyContent: 'center', alignItems: 'center'}}>
                                 <Icon name='account-circle' size={50} color = "#FFFFFF" />
@@ -142,8 +53,8 @@ export default () => {
                     }
                 </View>
                 <View style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-                    <Text style={TextosPerfil.NomeDestaque} >{`${nome}`}</Text>
-                    <Text style={TextStyles.baseText} >{`${email}`}</Text>
+                    <Text style={TextosPerfil.NomeDestaque} >{`${user.nome}`}</Text>
+                    <Text style={TextStyles.baseText} >{`${user.email}`}</Text>
                 </View>
                 <View style={{flex: 1, width:'100%', padding: 40, paddingBottom: 40 , alignSelf:'center',justifyContent: 'space-around'}}>
                     <BtnDestaque onPress={() => navigation.navigate('EditarPerfil')} >
@@ -187,11 +98,11 @@ export default () => {
                 <View style = {{flex: 1, width: '100%', padding: 20, justifyContent: 'space-around', alignItems: 'center'}} >
                     <CustomLInk
                         Texto="Sair"
-                        onPress={() => navigation.reset({ routes: [{name: 'Login'}] })} 
+                        onPress={Sair} 
                     />
                     <CustomLInk
                         Texto="Excluir Conta"
-                        onPress={() => ExcluirConta()}
+                        onPress={ExcluirConta}
                     />
                 </View>
             </View>
@@ -199,12 +110,6 @@ export default () => {
         </Container>
     );
 }
-const AvatarIcon = styled.Image`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-`;
-
 export const TextosPerfil = StyleSheet.create({
     NomeDestaque: {
         fontFamily: "Century-Gothic",

@@ -1,43 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
-import { UserContext } from '../../contexts/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Container, InputContainer, BtnDestaque, TextStyles, InputSenha, InputObrigatorio, TopoPadrao} from '../../components/Components'; //Componentes "repetitivos", criados em Components
+import { Container, InputContainer, BtnDestaque, TextStyles, InputSenha, InputObrigatorio, TopoPadrao} from '../../components/Components';
+import Api from '../../Api'
+
 
 export default () => {
     const navigation = useNavigation();
     const [nome, setNome] = useState ('');
     const [email, setEmail] = useState ('');
     const [senha, setSenha] = useState ('');
-    
-    const {dispatch: userDispatch} = useContext(UserContext);
-    
-    const Cadastrar = async() => {
-        var id = '2';
-        if(nome!=='' && email !=='' && senha !== ''){ 
-            const getEmail = await AsyncStorage.getItem('email');
-            if (getEmail !== email) {                
-                let userChaves= [['id', id], ['nome', nome.toUpperCase()], ['email', email], ['senha', senha]];
-                await AsyncStorage.multiSet(userChaves);
-                userDispatch({
-                    type: 'setLogin',
-                    payload: {
-                        id: id,
-                        nome: nome.toUpperCase(),
-                        email: email,
-                        senha: senha
-                    } 
-                });
-                alert(`Bem Vindo ${nome.toUpperCase()}!`);
-                console.log(getEmail);
-                navigation.reset({ routes: [{name: 'MainTab'}] });
-            } else {
-                alert('O email informado já está cadastrado.')
-            }
-            
+
+    const Cadastrar = () => {
+        if(nome!=='' && email !=='' && senha !== ''){
+            Api.cadastro(nome, email, senha);
         } else {
-            alert('Preencha os campos!');
+            alert('Preencha todos os campos!');
         }
 
     }
@@ -77,7 +55,7 @@ export default () => {
                         onChangeText = {senha => setSenha(senha)}
                     />
 
-                    <BtnDestaque onPress= {()=>Cadastrar()} >
+                    <BtnDestaque onPress= {Cadastrar} >
                         <Text style={TextStyles.BtnDestaqueText}>
                             CADASTRAR
                         </Text>

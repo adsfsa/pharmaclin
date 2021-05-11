@@ -225,7 +225,7 @@ export const TextStyles = StyleSheet.create({
       color: '#000000',
       fontSize: 15,
     },
-    preloadText: {
+    PreloadText: {
         fontFamily: "Century-Gothic",
         fontSize: 50,
         fontWeight: "bold",
@@ -235,6 +235,11 @@ export const TextStyles = StyleSheet.create({
         fontFamily: 'Century-Gothic',
         color: '#000000',
         fontSize: 25,
+    },
+    CadastroText:{
+        fontFamily: "Century-Gothic",
+        color: '#FFFFFF',
+        fontSize: 15,
     },
     LinkText:{
         fontFamily: "Century-Gothic",

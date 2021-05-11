@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Image } from "react-native";
 import { UserContext } from '../contexts/UserContext'
-
 import { MaterialIcons } from '@expo/vector-icons';
+import Api from '../Api'
 
 const TabArea = styled.View`
     height: 50px;
@@ -28,36 +27,12 @@ const TabItemCenter = styled.TouchableOpacity`
 `;
 
 export default ({state, navigation}) => {
-    const { state:user } = useContext(UserContext);
+    const {state: user} = useContext(UserContext);
     const {dispatch: userDispatch} = useContext(UserContext);
-    const [avatarIcon, setAvatarIcon] = useState('null');
 
     useEffect(()=> {
-        async function carregarAvatar(){
-           const avatar = await AsyncStorage.getItem("avatar");
-           if (avatar) {
-                setAvatarIcon(avatar);
-           }
-        }
-        carregarAvatar();
+        Api.carregarAvatar(userDispatch);
     } ,[]);
-
-    useEffect(()=> {
-        async function atualizarAvatar(){
-            if (avatarIcon) {
-                await AsyncStorage.setItem('avatar', avatarIcon)
-                userDispatch({
-                    type: 'setAvatar',
-                    payload: {
-                        avatar: avatarIcon
-                    } 
-                });                
-            }
-        }
-        atualizarAvatar();
-
-    } ,[avatarIcon]);
-
 
     const goTo = (screenName) => {
         navigation.reset({
@@ -88,8 +63,8 @@ export default ({state, navigation}) => {
             </TabItem>
 
             <TabItem onPress={()=>goTo('Perfil')} >
-                {avatarIcon != null && avatarIcon != 'null' ?
-                    <Image source={{uri: avatarIcon}} style ={{height: 30, width: 30, borderRadius: 15, borderWidth: 3, borderColor: state.index===4? "#FE7F57" : "#B2B2B2"}} />
+                {user.avatar !== "" ?
+                    <Image source={{uri: user.avatar}} style ={{height: 30, width: 30, borderRadius: 15, borderWidth: 3, borderColor: state.index===4? "#FE7F57" : "#B2B2B2"}} />
                     :
                     <MaterialIcons name="account-circle" size={30} color={state.index===4? "#FE7F57" : "#B2B2B2"} />
                 }
