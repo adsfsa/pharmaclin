@@ -1,12 +1,9 @@
-import React, { useState, useContext, useRef } from 'react';
-import { UserContext } from '../../../contexts/UserContext';
+import React, { useState, useRef } from 'react';
 import { Alert, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import firebase from '../../../../firebaseConfig';
 
-export const EditarSenha = ({senha}) =>{    
-    const {dispatch: userDispatch} = useContext(UserContext);
-    const { state:user } = useContext(UserContext);
+export const EditarSenha = ({senha, email, userDispatch}) =>{
 
     const inputSenha = useRef(null);
 
@@ -38,12 +35,12 @@ export const EditarSenha = ({senha}) =>{
                         onPress: ()=>{
                             var usuario = firebase.auth().currentUser;
                             const credential = firebase.auth.EmailAuthProvider.credential(
-                                usuario.email, 
-                                user.senha
+                                email, 
+                                senha
                             );
                             usuario.reauthenticateWithCredential(credential);
                             usuario.updatePassword(novaSenha)
-                            .then(function() {
+                            .then(() => {
                                 userDispatch({
                                     type: 'setSenha',
                                     payload: {
@@ -55,7 +52,7 @@ export const EditarSenha = ({senha}) =>{
                                 Alert.alert('Concluído!', 'Sua nova senha foi salva.');
                                 return;
                             })
-                            .catch(function(error) {
+                            .catch((error) => {
                                 console.log(error.message);
                                 Alert.alert('ERRO!', 'Algo deu errado.');
                                 return;

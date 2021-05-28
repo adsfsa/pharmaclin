@@ -1,11 +1,8 @@
-import React, { useState, useContext, useRef } from 'react';
-import { UserContext } from '../../../contexts/UserContext';
+import React, { useState, useRef } from 'react';
 import { Alert, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import firebase from '../../../../firebaseConfig';
 
-export const EditarNome = ({nome}) =>{
-    const {dispatch: userDispatch} = useContext(UserContext);
+export const EditarNome = ({nome, userDispatch}) =>{
 
     const inputNome = useRef(null);
 
@@ -31,26 +28,16 @@ export const EditarNome = ({nome}) =>{
                     {
                         text: 'OK',
                         onPress: ()=>{
-                            firebase.auth().currentUser.updateProfile({
-                                displayName: novoNome.toUpperCase()
-                            })
-                            .then(function() {
-                                userDispatch({
-                                    type: 'setNome',
-                                    payload: {
-                                        nome: novoNome.toUpperCase()
-                                    } 
-                                });
-                                inputNome.current.blur();
-                                setNovoNome("");
-                                Alert.alert('Concluído!', 'Seu novo nome foi salvo.');
-                                return;
-                            })
-                            .catch(function(error) {
-                                console.log(error.message);
-                                Alert.alert('ERRO!', 'Algo deu errado.');
-                                return;
-                            });                             
+                            userDispatch({
+                                type: 'setNome',
+                                payload: {
+                                    nome: novoNome.toUpperCase()
+                                } 
+                            });
+                            inputNome.current.blur();
+                            setNovoNome("");
+                            Alert.alert('Concluído!', 'Seu novo nome foi salvo.');
+                            return;                         
                         }
                     },
                 ],

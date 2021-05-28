@@ -1,9 +1,8 @@
 import React from 'react';
-import { Alert, Text, Button, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Container } from '../../components/Components'; //Componentes "repetitivos", criados em Components
+import { Container } from '../../components/Components';
 import PharmaClinLogo100x100 from '../../../svgs/PharmaClinLogo100x100';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

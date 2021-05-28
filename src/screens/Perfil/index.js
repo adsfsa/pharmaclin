@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from 'react';
-import { Alert, Text, View, StyleSheet, Image } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Container,BtnDestaque, TextStyles, BtnNormal, CustomLInk } from '../../components/Components';
+import { Container,BtnDestaque, TextStyles, BtnNormal, CustomLInk, ModalAguarde } from '../../components/Components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { UserContext } from '../../contexts/UserContext';
 import Api from '../../Api'
@@ -9,34 +9,19 @@ import Api from '../../Api'
 
 export default () => {
     const navigation = useNavigation();
+    const [loading, verLoading] = useState(false);
 
     const {state: user} = useContext(UserContext);
     const {dispatch: userDispatch} = useContext(UserContext);
 
-    useEffect(()=> {
-        Api.carregarAvatar(userDispatch);
-        Api.carregarNome(userDispatch);
-        Api.carregarEmail(userDispatch);       
-    } ,[]);    
-
-    useEffect(()=> {
-        Api.atualizarAvatar(user.avatar);
-    } ,[user.avatar]);
-
-    useEffect(()=> {
-        Api.atualizarNome(user.nome);        
-    } ,[user.nome]);
-
-    useEffect(()=> {
-        Api.atualizarEmail(user.email);
-    } ,[user.email]);
-
     const Sair = () =>{
-        Api.sair(userDispatch);  
+        verLoading(true);
+        Api.sair(userDispatch, verLoading);  
     }
 
     const ExcluirConta = async () =>{
-        Api.excluirConta(user.senha, userDispatch);               
+        verLoading(true);
+        Api.excluirConta(user.senha, userDispatch, verLoading);               
     }
 
     return (
@@ -95,7 +80,9 @@ export default () => {
 
                 </View>
 
-                <View style = {{flex: 1, width: '100%', padding: 20, justifyContent: 'space-around', alignItems: 'center'}} >
+                <View
+                    style = {{flex: 1, width: '100%', padding: 20, justifyContent: 'space-around', alignItems: 'center'}}
+                >
                     <CustomLInk
                         Texto="Sair"
                         onPress={Sair} 
@@ -105,6 +92,9 @@ export default () => {
                         onPress={ExcluirConta}
                     />
                 </View>
+
+                <ModalAguarde loading={loading}/>
+
             </View>
 
         </Container>

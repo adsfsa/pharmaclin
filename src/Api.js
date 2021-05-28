@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from '../firebaseConfig';
+import { Alert } from 'react-native';
 /*
     sempre que for importar de algum arquivo do projeto verifique o caminho dentro das ''
         exemplo: '../firebaseConfig' é diferente de '../../firebaseConfig'
@@ -40,7 +41,7 @@ objeto: {algo: { algo: {algo: valor} }, algo2: valor }*/
 export default {
     autenticar: async (navigation, userDispatch) => {//lógica para o Preload
         firebase.auth().onAuthStateChanged(//entenda vendo a documentação do firebase
-            function(user) {//verifique se algum usuario solicitou autenticação
+            (user) => {//verifique se algum usuario solicitou autenticação
                 if (user) {//se sim, pegue as informações dele do banco de dados
                     firebase.firestore().collection("users")
                     .get() //esse user é um registro de autenticação login/senha do firebase, não um user padrão do banco de dados. É melhor pegar o user do banco ao invés do user da autenticação. Por isso, pegue todos os users com o get, e encontre o user do banco que tem o mesmo id do user da autenticação 
@@ -51,28 +52,8 @@ export default {
                                     type: 'setAll',
                                     payload: doc.data() 
                                 });
-                                let chaves = [
-                                    ["avatar", doc.data().avatar],
-                                    ["buscasRecentes", JSON.stringify(doc.data().buscasRecentes)],
-                                    ["cartaoFidelidade", JSON.stringify(doc.data().cartaoFidelidade)],
-                                    ["email", doc.data().email],
-                                    ["farmaciasSalvas", JSON.stringify(doc.data().farmaciasSalvas)],
-                                    ["id", doc.data().id],
-                                    ["informacoesAdicionais",JSON.stringify(doc.data().informacoesAdicionais)],
-                                    ["latitude", doc.data().latitude],
-                                    ["locaisSalvos", JSON.stringify(doc.data().locaisSalvos)],
-                                    ["longitude", doc.data().longitude],
-                                    ["nome", doc.data().nome],
-                                    ["registrosCompra", JSON.stringify(doc.data().registrosCompra)],
-                                    ["registrosConsulta", JSON.stringify(doc.data().registrosConsulta)],
-                                    ["registrosPessoais", JSON.stringify(doc.data().registrosPessoais)],
-                                    ["senha", doc.data().senha],
-                                    ["telefone", doc.data().telefone]
-                                ];
-                                AsyncStorage.multiSet(chaves);
                                 navigation.reset({ routes: [{name: 'MainTab'}] });
                                 alert(`Bem vindo ${doc.data().nome}!`);
-                                console.log(doc.data());
                             }
                         });
                     });                    
@@ -84,18 +65,22 @@ export default {
         );
     },
 
-    login: async (email, senha) => {
+    login: async (email, senha, verLoading) => {
         firebase.auth().signInWithEmailAndPassword(email, senha)
+        .then(()=>{
+            verLoading(false);
+        })
         .catch((error) => {//caso dê erro, pegue esse erro e faça algo
             try {
                 throw firebaseErrors[error.code] || error.message;//compare o código do erro com algum erro da lista do inicio. se for igual a algum da lista traduza a mensagem, se não for, apenas exiba
             } catch (e) {                        
                 alert(e);
+                verLoading(false);
             }
         });
     },
 
-    cadastro: async (nome, email, senha) => {
+    cadastro: async (nome, email, senha, verLoading) => {
         firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then((userCredential) => {
             var user = userCredential.user;
@@ -118,8 +103,12 @@ export default {
                 senha: senha,
                 telefone:''
             })
+            .then(()=>{
+                verLoading(false);
+            })
             .catch((error) => {
                 console.error("Error adding document: ", error.code);
+                verLoading(false);
             });
         })
         .catch((error) => {
@@ -127,34 +116,36 @@ export default {
                 throw firebaseErrors[error.code] || error.message;
             } catch (e) {
                 alert(e);
+                verLoading(false);
             }
-            
         });  
     },
 
-    sair: async(userDispatch) => {
+    sair: async (userDispatch, verLoading) => {
         firebase.auth().signOut()
-        .then(async () => {
+        .then(() => {
             userDispatch({
                 type: 'clearState'
             });
-            await AsyncStorage.getAllKeys((error,keys)=>AsyncStorage.multiRemove(keys));
             alert("Desconectado!");
+            verLoading(false);
         })
         .catch((error) => {
             console.log(error.message);
             alert("Ocorreu algum erro! Por favor tente novamente.");
+            verLoading(false);
         });
     },
 
-    excluirConta: async(senha, userDispatch) => {
+    excluirConta: async (senha, userDispatch, verLoading) => {
         var usuario = firebase.auth().currentUser;
         const credential = firebase.auth.EmailAuthProvider.credential(
             usuario.email, 
             senha
         );
         usuario.reauthenticateWithCredential(credential);
-        firebase.firestore().collection("users").get().then((querySnapshot) => {
+        firebase.firestore().collection("users").get()
+        .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 if(doc.data().id === usuario.uid){
                     firebase.firestore().collection("users")
@@ -162,165 +153,128 @@ export default {
                     .delete()
                     .then(() =>{
                         usuario.delete()
-                        .then(async function() {
+                        .then(async () => {
                             userDispatch({
                                 type: 'clearState'
                             });
-                            await AsyncStorage.getAllKeys((error,keys)=>AsyncStorage.multiRemove(keys));
                             alert("Conta Excluída!");
+                            verLoading(false);
                         })
-                        .catch(function(error) {
+                        .catch((error) => {
                             console.log(error.message);
                             alert("Ocorreu algum erro! Por favor tente novamente.");
+                            verLoading(false);
                         });
                     })
-                    .catch(function(error) {
+                    .catch((error) => {
                         console.log(error.message);
                         alert("Ocorreu algum erro! Por favor tente novamente.");
+                        verLoading(false);
                     });
                 }
             });
+        })
+        .catch((error) => {
+            console.log(error.message);
+            alert("Ocorreu algum erro! Por favor tente novamente.");
+            verLoading(false);
         });
     },
 
-    carregarAvatar: async(userDispatch) => {
-        const avatar = await AsyncStorage.getItem("avatar");
-        if (avatar) {
-            userDispatch({
-                type: 'setAvatar',
-                payload: {
-                    avatar: avatar
-                } 
-            });
-        }
-    },
+    atualizarAvatar: (avatar, id) => {
+        firebase.auth().currentUser.updateProfile({
+            photoURL: avatar
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        });
 
-    carregarNome: async(userDispatch) => {
-        const nome = await AsyncStorage.getItem("nome");
-        if (nome) {
-            userDispatch({
-                type: 'setNome',
-                payload: {
-                    nome: nome
-                } 
+        firebase.firestore().collection("users")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().id === id){
+                    firebase.firestore().collection("users")
+                    .doc(doc.id) // doc.data().id é diferente de doc.id   o primeiro é o id do usuario e o segundo é o id do documento em si. Não que o data() sempre vá ter id, mas vai ter alguma coisa. No nosso caso, como SABEMOS que tem um id, um avatar, uma latitude, etc., podemos requistar diretamente.
+                    .update({//perceba que a função update do firestore é idêntica ao dispatch
+                        avatar: avatar
+                    });
+                }
             });
-        }
-    },
-
-    carregarEmail: async(userDispatch) => {
-        const email = await AsyncStorage.getItem("email");
-        if (email) {
-            userDispatch({
-                type: 'setEmail',
-                payload: {
-                    email: email
-                } 
-            });
-        }
-    },
-
-    carregarSenha: async(userDispatch) => {
-        const senha = await AsyncStorage.getItem("senha");
-        if (senha) {
-            userDispatch({
-                type: 'setSenha',
-                payload: {
-                    senha: senha
-                } 
-            });
-        }
-    },
-
-    atualizarAvatar: async (avatar) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-            firebase.firestore().collection("users")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    if(doc.data().id === user.uid){
-                        firebase.firestore().collection("users")
-                        .doc(doc.id) // doc.data().id é diferente de doc.id   o primeiro é o id do usuario e o segundo é o id do documento em si. Não que o data() sempre vá ter id, mas vai ter alguma coisa. No nosso caso, como SABEMOS que tem um id, um avatar, uma latitude, etc., podemos requistar diretamente.
-                        .update({//perceba que a função update do firestore é idêntica ao dispatch
-                            avatar: avatar
-                        });
-                        AsyncStorage.setItem("avatar", avatar);
-                    }
-                });
-            });                    
-        }
-        else {
-            alert("Ocorreu algum erro! Por favor tente novamente.");
-        }
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        });
     },
     
-    atualizarNome: async (nome) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-            firebase.firestore().collection("users")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    if(doc.data().id === user.uid){
-                        firebase.firestore().collection("users")
-                        .doc(doc.id)
-                        .update({
-                            nome: nome
-                        });
-                        AsyncStorage.setItem("nome", nome);
-                    }
-                });
-            });                    
-        }
-        else {
-            alert("Ocorreu algum erro! Por favor tente novamente.");
-        }        
+    atualizarNome: (nome, id) => {
+        firebase.auth().currentUser.updateProfile({
+            displayName: nome
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        });
+
+        firebase.firestore().collection("users")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().id === id){
+                    firebase.firestore().collection("users")
+                    .doc(doc.id)
+                    .update({
+                        nome: nome
+                    });
+                }
+            });
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        });   
     },
 
-    atualizarEmail: async (email) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-            firebase.firestore().collection("users")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    if(doc.data().id === user.uid){
-                        firebase.firestore().collection("users")
-                        .doc(doc.id)
-                        .update({
-                            email: email
-                        });
-                        AsyncStorage.setItem("email", email);
-                    }
-                });
-            });                    
-        }
-        else {
-            alert("Ocorreu algum erro! Por favor tente novamente.");
-        }        
+    atualizarEmail: (email, id) => {
+        firebase.firestore().collection("users")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().id === id){
+                    firebase.firestore().collection("users")
+                    .doc(doc.id)
+                    .update({
+                        email: email
+                    });
+                }
+            });
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        }); 
     },
 
-    atualizarSenha: async (senha) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-            firebase.firestore().collection("users")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    if(doc.data().id === user.uid){
-                        firebase.firestore().collection("users")
-                        .doc(doc.id)
-                        .update({
-                            senha: senha
-                        });
-                        AsyncStorage.setItem("senha", senha);
-                    }
-                });
-            });                    
-        }
-        else {
-            alert("Ocorreu algum erro! Por favor tente novamente.");
-        }        
+    atualizarSenha: (senha, id) => {
+        firebase.firestore().collection("users")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().id === id){
+                    firebase.firestore().collection("users")
+                    .doc(doc.id)
+                    .update({
+                        senha: senha
+                    });
+                }
+            });
+        })
+        .catch((error) => {
+            console.log(error.message);
+            Alert.alert('ERRO!', 'Algo deu errado.');
+        });  
     },
 
     carregarInformacoesAdicionais: async(userDispatch) => {
@@ -351,6 +305,10 @@ export default {
                         AsyncStorage.setItem("informacoesAdicionais", JSON.stringify(informacoesAdicionais));
                     }
                 });
+            })
+            .catch((error) => {
+                console.log(error.message);
+                Alert.alert('ERRO!', 'Algo deu errado.');
             });                    
         }
         else {

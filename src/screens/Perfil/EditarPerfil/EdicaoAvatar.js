@@ -1,14 +1,10 @@
-import React, {useContext} from 'react';
-import { UserContext } from '../../../contexts/UserContext';
+import React from 'react';
 import { Alert, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
-import firebase from '../../../../firebaseConfig';
 
-
-export const RemoverAvatar = () =>{
-    const {dispatch: userDispatch} = useContext(UserContext);
+export const RemoverAvatar = ({userDispatch}) =>{
     const RemoverFoto = ()=> {
         Alert.alert(
             'Confirmar!',
@@ -17,25 +13,14 @@ export const RemoverAvatar = () =>{
                 {
                     text: 'Sim', 
                     onPress: ()=>{
-                        firebase.auth().currentUser.updateProfile({
-                            photoURL: ""
-                        })
-                        .then(function() {
-                            userDispatch({
-                                type: 'setAvatar',
-                                payload: {
-                                    avatar: ''
-                                } 
-                            });
-                            Alert.alert('Concluído!', 'Sua foto foi removida.');
-                            return;
-                        })
-                        .catch(function(error) {
-                            console.log(error.message);
-                            Alert.alert('ERRO!', 'Algo deu errado.');
-                            return;
+                        userDispatch({
+                            type: 'setAvatar',
+                            payload: {
+                                avatar: ""
+                            }
                         });
-                        
+                        Alert.alert('Concluído!', 'Sua foto foi removida.');
+                        return;                        
                     }
                 },
                 {
@@ -60,8 +45,7 @@ export const RemoverAvatar = () =>{
     );
 };
 
-export const EditarAvatar = () => {
-    const {dispatch: userDispatch} = useContext(UserContext);
+export const EditarAvatar = ({userDispatch}) => {
     const EscolherAvatar = async() =>{
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -84,25 +68,14 @@ export const EditarAvatar = () => {
                     {
                         text: 'Ok', 
                         onPress: ()=>{                            
-                            var user = firebase.auth().currentUser;
-                            user.updateProfile({
-                                photoURL: result.uri
-                            })
-                            .then(function() {
-                                userDispatch({
-                                    type: 'setAvatar',
-                                    payload: {
-                                        avatar: result.uri
-                                    } 
-                                });
-                                Alert.alert('Concluído!', 'Sua foto foi salva!');
-                                return;
-                            })
-                            .catch(function(error) {
-                                console.log(error.message);
-                                Alert.alert('ERRO!', 'Algo deu errado.');
-                                return;
-                            });                            
+                            userDispatch({
+                                type: 'setAvatar',
+                                payload: {
+                                    avatar: result.uri
+                                }
+                            });
+                            Alert.alert('Concluído!', 'Sua foto foi salva!');
+                            return;                        
                         }
                     }
                 ],

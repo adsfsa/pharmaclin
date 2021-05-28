@@ -1,13 +1,9 @@
-import React, { useState, useContext, useRef } from 'react';
-import { UserContext } from '../../../contexts/UserContext';
+import React, { useState, useRef } from 'react';
 import { Alert, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import firebase from '../../../../firebaseConfig';
 
-export const EditarEmail = ({email}) =>{
-    const {dispatch: userDispatch} = useContext(UserContext);
-    const { state:user } = useContext(UserContext);
+export const EditarEmail = ({email, senha, userDispatch}) =>{
 
     const inputEmail = useRef(null);
 
@@ -35,13 +31,12 @@ export const EditarEmail = ({email}) =>{
                         onPress: ()=>{
                             var usuario = firebase.auth().currentUser;
                             const credential = firebase.auth.EmailAuthProvider.credential(
-                                usuario.email, 
-                                user.senha
+                                email, 
+                                senha
                             );
                             usuario.reauthenticateWithCredential(credential);
                             usuario.updateEmail(novoEmail)
-                            .then(async function() {
-                                await AsyncStorage.setItem('email', novoEmail);
+                            .then(() => {
                                 userDispatch({
                                     type: 'setEmail',
                                     payload: {
@@ -53,7 +48,7 @@ export const EditarEmail = ({email}) =>{
                                 Alert.alert('Concluído!', 'Seu novo email foi salvo.');
                                 return; 
                             })
-                            .catch(function(error) {
+                            .catch((error) => {
                                 console.log(error.message);
                                 Alert.alert('ERRO!', 'Algo deu errado.');
                                 return;

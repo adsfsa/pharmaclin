@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { CheckBox, Input } from 'react-native-elements';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Modal, ActivityIndicator } from 'react-native';
 import PharmaClinLogo100x100 from '../../svgs/PharmaClinLogo100x100';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -256,3 +256,36 @@ export const TextStyles = StyleSheet.create({
 export const Loading = styled.ActivityIndicator`
     margin-top: 50px;
 `;
+export const ModalAguarde = ({loading}) =>{
+    const Styles = StyleSheet.create({
+        EstiloView: {
+            flex: 1,
+            width: '100%',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)'
+        },
+        EstiloAlerta: {
+            marginHorizontal: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor:'#FFFFFF',
+            borderRadius: 10
+        }
+    });
+    return (
+        <View >
+            <Modal
+                animationType="fade"
+                visible={loading}
+                transparent={true}
+            >
+                <View style={Styles.EstiloView}>
+                    <View style={Styles.EstiloAlerta}>
+                        <Text style={TextStyles.baseText}>Aguarde</Text>
+                        <ActivityIndicator size="large" color="#00BACD" />
+                    </View>
+                </View>
+            </Modal>                        
+        </View>
+    )
+}

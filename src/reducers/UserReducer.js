@@ -47,8 +47,16 @@ export const UserReducer = (state, action) => {
         case 'setInformacoesAdicionais':
             return {...state, informacoesAdicionais: action.payload.informacoesAdicionais}
             break;        
+        case 'setCompra':
+            return {...state, registrosCompra: action.payload.registrosCompra}
+            break;        
+        case 'setConsulta':
+            return {...state, registrosCompra: action.payload.registrosConsulta}
+            break;        
+        case 'setLembretes':
+            return {...state, registrosCompra: action.payload.registrosPessoais}
+            break;        
         default:
             return state;
     }
 }
-//

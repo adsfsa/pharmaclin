@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RemoverAvatar} from './EdicaoAvatar';
 
-export const SuaFoto = ({avatar}) => {
+export const SuaFoto = ({avatar, userDispatch}) => {
     return (
         <Scroller>
             <View style = {{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', marginBottom: 30}}>
@@ -26,7 +26,7 @@ export const SuaFoto = ({avatar}) => {
                 }
                 
                 {avatar !== '' &&
-                    <RemoverAvatar/>
+                    <RemoverAvatar userDispatch={userDispatch}/>
                 }
             </View> 
         </Scroller>

@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 import { Image } from "react-native";
 import { UserContext } from '../contexts/UserContext'
 import { MaterialIcons } from '@expo/vector-icons';
-import Api from '../Api'
 
 const TabArea = styled.View`
     height: 50px;
@@ -27,12 +26,7 @@ const TabItemCenter = styled.TouchableOpacity`
 `;
 
 export default ({state, navigation}) => {
-    const {state: user} = useContext(UserContext);
-    const {dispatch: userDispatch} = useContext(UserContext);
-
-    useEffect(()=> {
-        Api.carregarAvatar(userDispatch);
-    } ,[]);
+    const {state: user} = useContext(UserContext);    
 
     const goTo = (screenName) => {
         navigation.reset({
