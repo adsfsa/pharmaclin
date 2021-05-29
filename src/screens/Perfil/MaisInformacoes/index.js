@@ -44,11 +44,6 @@ export default () => {
     }
 
     const editarInformacaoAdicional = async(itemSelecionado, novaAtualizacao) => {
-        if (novaAtualizacao === "") {
-            Alert.alert("AVISO!", "Nenhuma alteração");
-            return;
-            
-        };
         const buscar = user.informacoesAdicionais.filter(
             informacoesAdicionais => informacoesAdicionais===novaAtualizacao
         );
@@ -57,21 +52,40 @@ export default () => {
             return;
             
         };
-        const novas = user.informacoesAdicionais.map(item => {
-            if (item === itemSelecionado){
-                item = novaAtualizacao;
-                return item;
-            }
-            return item;
-        });
-        userDispatch({
-            type: 'setInformacoesAdicionais',
-            payload: {
-                informacoesAdicionais: novas
-            } 
-        });
-        setSelecionado(null);
-        Keyboard.dismiss();
+        Alert.alert(
+            "Confirmar!",
+            "Deseja salvar alterações?",
+            [
+                {
+                    text: "Não",
+                    onPress: ()=> {
+                        return;
+                    },
+                    style: 'cancel'
+                },
+                {
+                    text: "Sim",
+                    onPress: ()=>{
+                        const novas = user.informacoesAdicionais.map(item => {
+                            if (item === itemSelecionado){
+                                item = novaAtualizacao;
+                                return item;
+                            }
+                            return item;
+                        });
+                        userDispatch({
+                            type: 'setInformacoesAdicionais',
+                            payload: {
+                                informacoesAdicionais: novas
+                            } 
+                        });
+                        setSelecionado(null);
+                        Keyboard.dismiss();
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
     }
 
     const removerInformacaoAdicional = (item) => {
@@ -80,14 +94,14 @@ export default () => {
             "Deseja remover esta informação?",
             [
                 {
-                    text: "Cancelar",
+                    text: "Não",
                     onPress: ()=> {
                         return;
                     },
                     style: 'cancel'
                 },
                 {
-                    text: "Confirmar",
+                    text: "Sim",
                     onPress: ()=>{
                         const filter = user.informacoesAdicionais.filter(
                             informacoesAdicionais => informacoesAdicionais !== item
@@ -122,13 +136,11 @@ export default () => {
         });
     }
     const RenderItem = ({item}) => {
-        const backgroundColor = selecionado === item? '#FFFFFF':'transparent';
         return(
             <InformacaoAdicional
                 item = {item}
                 editarInformacaoAdicional = {editarInformacaoAdicional}
                 removerInformacaoAdicional = {removerInformacaoAdicional}
-                backgroundColor = {{backgroundColor}}
                 setSelecionado = {setSelecionado}
                 selecionado = {selecionado}
             />
@@ -176,13 +188,36 @@ export default () => {
                             onFocus = {()=> setEditando(true)}
                             onBlur = {()=> setEditando(false)}
                         />
+                        {editando &&
+                            (novaInformacaoAdicional !== ""
+                                ?   <View
+                                        style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}
+                                    >
+                                        <TouchableOpacity
+                                            style = {{marginHorizontal: 5}}
+                                            onPress={() => setNovaInformacaoAdicional("")}
+                                        >
+                                            <Icon name='backspace' size={24} color = "#000000" />
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            style = {{marginHorizontal: 5}}
+                                            onPress={addInformacaoAdicional}
+                                        >
+                                            <Icon name='add' size={24} color = "#000000" />
+                                        </TouchableOpacity>
+
+                                    </View>   
+
+                                :   <TouchableOpacity
+                                        style = {{marginHorizontal: 5}}
+                                        onPress={()=> inputInformacaoAdicional.current.blur()}
+                                    >
+                                        <Icon name='clear' size={24} color = "#000000" />
+                                    </TouchableOpacity>
+                            )                         
+                        }
                         
-                        <TouchableOpacity
-                            style = {{marginHorizontal: 5}}
-                            onPress={addInformacaoAdicional}
-                        >
-                            <Icon name='add' size={24} color = "#000000" />
-                        </TouchableOpacity>
                     </AdicionarInformacao>
                 </View>
             </View>
