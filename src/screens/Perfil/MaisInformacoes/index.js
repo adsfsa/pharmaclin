@@ -9,6 +9,9 @@ import Api from '../../../Api';
 import {InformacaoAdicional} from './EdicaoInformacoes'
 
 export default () => {
+
+    const navigation = useNavigation();
+
     const inputInformacaoAdicional = useRef(null);
 
     const {state: user} = useContext(UserContext);
@@ -29,10 +32,10 @@ export default () => {
             informacoesAdicionais => informacoesAdicionais===novaInformacaoAdicional);
         if (buscar.length !== 0) {
             Alert.alert("AVISO!", "Esta informação já existe");
-            console.log(user.informacoesAdicionais);
             return;
             
         }
+        await Api.salvarInformacoesAdicionais([...user.informacoesAdicionais, novaInformacaoAdicional]);
         userDispatch({
             type: 'setInformacoesAdicionais',
             payload: {
@@ -65,7 +68,7 @@ export default () => {
                 },
                 {
                     text: "Sim",
-                    onPress: ()=>{
+                    onPress: async ()=>{
                         const novas = user.informacoesAdicionais.map(item => {
                             if (item === itemSelecionado){
                                 item = novaAtualizacao;
@@ -73,6 +76,7 @@ export default () => {
                             }
                             return item;
                         });
+                        await Api.salvarInformacoesAdicionais(novas);
                         userDispatch({
                             type: 'setInformacoesAdicionais',
                             payload: {
@@ -102,10 +106,11 @@ export default () => {
                 },
                 {
                     text: "Sim",
-                    onPress: ()=>{
+                    onPress: async ()=>{
                         const filter = user.informacoesAdicionais.filter(
                             informacoesAdicionais => informacoesAdicionais !== item
                         )
+                        await Api.salvarInformacoesAdicionais(filter);
                         userDispatch({
                             type: 'setInformacoesAdicionais',
                             payload: {
@@ -119,22 +124,12 @@ export default () => {
         );        
     }
 
-    useEffect(()=> {
-        Api.carregarInformacoesAdicionais(userDispatch);
-    } ,[]);
-
-    useEffect(()=> {
-        Api.salvarInformacoesAdicionais(user.informacoesAdicionais);
-    } ,[user.informacoesAdicionais]);
-    
-    
-    const navigation = useNavigation();
-
     const Voltar = () => {
         navigation.reset({
             routes: [{name: 'Perfil'}]
         });
     }
+    
     const RenderItem = ({item}) => {
         return(
             <InformacaoAdicional
@@ -240,12 +235,4 @@ export const AdicionarInformacao = styled.View`
     align-self: stretch;
     align-items: center;
     padding-horizontal: 20px;
-`;
-export const BtnLista = styled.TouchableOpacity`
-    height: 40px;
-    border: #000000;
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;     
 `;

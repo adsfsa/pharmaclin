@@ -51,10 +51,10 @@ export const UserReducer = (state, action) => {
             return {...state, registrosCompra: action.payload.registrosCompra}
             break;        
         case 'setConsulta':
-            return {...state, registrosCompra: action.payload.registrosConsulta}
+            return {...state, registrosConsulta: action.payload.registrosConsulta}
             break;        
         case 'setLembretes':
-            return {...state, registrosCompra: action.payload.registrosPessoais}
+            return {...state, registrosPessoais: action.payload.registrosPessoais}
             break;        
         default:
             return state;

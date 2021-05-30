@@ -113,7 +113,8 @@ export const InputSenha = ({placeholder, leftIcon, value, onChangeText}) => {
     const[icon, SetIcon] = useState(isVisible ? 'visibility-off': 'visibility');
     return(
         <Input
-            placeholder= {placeholder} secureTextEntry={!isVisible}
+            placeholder = {placeholder}
+            secureTextEntry={!isVisible}
             leftIcon = {{name: leftIcon, color: '#4A989F', size: 24}} 
             errorStyle = {{ color: 'red' }}
             rightIcon = {{name: icon,
@@ -130,7 +131,7 @@ export const InputSenha = ({placeholder, leftIcon, value, onChangeText}) => {
 export const InputObrigatorio = ({placeholder, leftIcon, keyboardType, autoCompleteType, value, onChangeText, autoCapitalize}) => {
     return (
         <Input
-            placeholder={placeholder}
+            placeholder = {placeholder}
             leftIcon = {{name: leftIcon, color: '#4A989F', size: 24}}
             errorStyle = {{ color: 'red' }}           
             textStyle = {{fontFamily: 'Century-Gothic'}}
@@ -251,6 +252,61 @@ export const TextStyles = StyleSheet.create({
         fontFamily: "Century-Gothic",        
         color: '#FFFFFF',
         fontSize: 15,
+    },
+    ListAlinhado: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+    },
+    BaseAlinhado: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 15,
+        textAlign: 'center',
+    },
+    AlinhadoPaddingHorizontal10: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        paddingHorizontal: 10
+    },
+    AlinhadoMarginTop15: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 15
+    },
+    AlinhadoMarginTop5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 5
+    },    
+    AlinhadoMarginT15MarginB5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 15,
+        marginBottom: 5
+    },    
+    AlinhadoMarginVertical5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginVertical: 5
+    },    
+    AlinhadoMarginVertical15: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginVertical: 15
     }    
 });
 export const Loading = styled.ActivityIndicator`
