@@ -1,62 +1,62 @@
-export const initialState = {
-    id: null,
-    nome:'',
-    email: '',
-    senha: '',
-    telefone:'',
-    latitude: '',
-    longitude: '',
+export const initialState = {//confira o firestore do firebase. Lá também está nessa mesma ordem (alfabética)
     avatar: '',
-    informacoesAdicionais: [],
-    farmaciasSalvas: [],
-    locaisSalvos: [],
     buscasRecentes: [],
-    registrosPessoais: [],
+    cartaoFidelidade: [],
+    email: '',
+    farmaciasSalvas: [],
+    id: '',
+    informacoesAdicionais: [],
+    latitude: '',
+    locaisSalvos: [],
+    longitude: '',
+    nome:'',
     registrosCompra: [],
     registrosConsulta: [],
-    cartaoFidelidade: []
+    registrosPessoais: [],
+    senha: '',
+    telefone:''
 };
-
+// ... significa: tudo relacionado a isso.
+//{...algo, algumacoisa: novacoisa} significa: pegue tudo de algo, e modifique apenas algumacoisa pela nova
 export const UserReducer = (state, action) => {
-    switch(action.type) {
+    switch(action.type) {//o sistema identifica a opção escolhida e modifica o estado acima
         case 'setAll':
-            return { ...state, id: action.payload.id, nome: action.payload.nome, email: action.payload.email, senha: action.payload.senha, telefone: action.payload.telefone, latitude: action.payload.latitude, longitude: action.payload.longitude, avatar: action.payload.avatar, informacoesAdicionais: action.payload.informacoesAdicionais, farmaciasSalvas: action.payload.farmaciasSalvas, locaisSalvos: action.payload.locaisSalvos, buscasRecentes: action.payload.buscasRecentes, registrosPessoais: action.payload.registrosPessoais, registrosCompra: action.payload.registrosCompra, registrosConsulta: action.payload.registrosConsulta, cartaoFidelidade: action.payload.cartaoFidelidade};
+            //setar tudo de uma vez só, pegando informações de outro lugar (no nosso caso, do firebase)
+            return { ...action.payload };
+            break;
+        case 'clearState':
+            //resetar para o estado inicial, só por precaução
+            return { ...initialState };
+            break;
+        case 'setAvatar':
+            //recuperar o estado atual, e mudar apenas o avatar
+            return {...state, avatar: action.payload.avatar}
             break;
         case 'setNome':
             return { ...state, nome: action.payload.nome };
             break;
+        case 'setEmail':
+            return { ...state, email: action.payload.email };
+            break;
+        case 'setSenha':
+            return { ...state, senha: action.payload.senha };
+            break;
         case 'setLogin':
-            return { ...state, id: action.payload.id, nome: action.payload.nome, email: action.payload.email, senha: action.payload.senha};
+            return { ...state, nome: action.payload.nome, email: action.payload.email, senha: action.payload.senha};
             break;
-        case 'setNewAdicionais':
+        case 'setInformacoesAdicionais':
             return {...state, informacoesAdicionais: action.payload.informacoesAdicionais}
-            break;
-        case 'setNewPerfil':
-            return {...state, nome: action.payload.nome, email:action.payload.email, senha: action.payload.senha}
-            break;
-        case 'setNewNome':
-            return {...state, nome: action.payload.nome}
-            break;
-        case 'setNewNomeEmail':
-            return {...state, nome: action.payload.nome, email:action.payload.email}
-            break;
-        case 'setNewNomeSenha':
-            return {...state, nome: action.payload.nome, senha: action.payload.senha}
-            break;
-        case 'setNewEmail':
-            return {...state, email:action.payload.email}
-            break;
-        case 'setNewEmailSenha':
-            return {...state, email:action.payload.email, senha: action.payload.senha}
-            break;
-        case 'setNewSenha':
-            return {...state, senha: action.payload.senha}
-            break;
-        case 'setAvatar':
-            return {...state, avatar: action.payload.avatar}
-            break;
+            break;        
+        case 'setCompra':
+            return {...state, registrosCompra: action.payload.registrosCompra}
+            break;        
+        case 'setConsulta':
+            return {...state, registrosConsulta: action.payload.registrosConsulta}
+            break;        
+        case 'setLembretes':
+            return {...state, registrosPessoais: action.payload.registrosPessoais}
+            break;        
         default:
             return state;
     }
 }
-//

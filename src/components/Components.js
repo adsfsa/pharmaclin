@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { CheckBox, Input } from 'react-native-elements';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Modal, ActivityIndicator } from 'react-native';
 import PharmaClinLogo100x100 from '../../svgs/PharmaClinLogo100x100';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -113,7 +113,8 @@ export const InputSenha = ({placeholder, leftIcon, value, onChangeText}) => {
     const[icon, SetIcon] = useState(isVisible ? 'visibility-off': 'visibility');
     return(
         <Input
-            placeholder= {placeholder} secureTextEntry={!isVisible}
+            placeholder = {placeholder}
+            secureTextEntry={!isVisible}
             leftIcon = {{name: leftIcon, color: '#4A989F', size: 24}} 
             errorStyle = {{ color: 'red' }}
             rightIcon = {{name: icon,
@@ -130,7 +131,7 @@ export const InputSenha = ({placeholder, leftIcon, value, onChangeText}) => {
 export const InputObrigatorio = ({placeholder, leftIcon, keyboardType, autoCompleteType, value, onChangeText, autoCapitalize}) => {
     return (
         <Input
-            placeholder={placeholder}
+            placeholder = {placeholder}
             leftIcon = {{name: leftIcon, color: '#4A989F', size: 24}}
             errorStyle = {{ color: 'red' }}           
             textStyle = {{fontFamily: 'Century-Gothic'}}
@@ -225,7 +226,7 @@ export const TextStyles = StyleSheet.create({
       color: '#000000',
       fontSize: 15,
     },
-    preloadText: {
+    PreloadText: {
         fontFamily: "Century-Gothic",
         fontSize: 50,
         fontWeight: "bold",
@@ -235,6 +236,11 @@ export const TextStyles = StyleSheet.create({
         fontFamily: 'Century-Gothic',
         color: '#000000',
         fontSize: 25,
+    },
+    CadastroText:{
+        fontFamily: "Century-Gothic",
+        color: '#FFFFFF',
+        fontSize: 15,
     },
     LinkText:{
         fontFamily: "Century-Gothic",
@@ -246,8 +252,96 @@ export const TextStyles = StyleSheet.create({
         fontFamily: "Century-Gothic",        
         color: '#FFFFFF',
         fontSize: 15,
+    },
+    ListAlinhado: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+    },
+    BaseAlinhado: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 15,
+        textAlign: 'center',
+    },
+    AlinhadoPaddingHorizontal10: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        paddingHorizontal: 10
+    },
+    AlinhadoMarginTop15: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 15
+    },
+    AlinhadoMarginTop5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 5
+    },    
+    AlinhadoMarginT15MarginB5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 15,
+        marginBottom: 5
+    },    
+    AlinhadoMarginVertical5: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginVertical: 5
+    },    
+    AlinhadoMarginVertical15: {
+        fontFamily: "Century-Gothic",
+        color: '#000000',
+        fontSize: 12,
+        textAlign: 'center',
+        marginVertical: 15
     }    
 });
 export const Loading = styled.ActivityIndicator`
     margin-top: 50px;
 `;
+export const ModalAguarde = ({loading}) =>{
+    const Styles = StyleSheet.create({
+        EstiloView: {
+            flex: 1,
+            width: '100%',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)'
+        },
+        EstiloAlerta: {
+            marginHorizontal: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor:'#FFFFFF',
+            borderRadius: 10
+        }
+    });
+    return (
+        <View >
+            <Modal
+                animationType="fade"
+                visible={loading}
+                transparent={true}
+            >
+                <View style={Styles.EstiloView}>
+                    <View style={Styles.EstiloAlerta}>
+                        <Text style={TextStyles.baseText}>Aguarde</Text>
+                        <ActivityIndicator size="large" color="#00BACD" />
+                    </View>
+                </View>
+            </Modal>                        
+        </View>
+    )
+}
