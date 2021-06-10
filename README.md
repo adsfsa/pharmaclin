@@ -7,10 +7,10 @@ Vídeos Explicativos:
 ## Curiosidades
   1. Projeto desenvolvido com o [Expo Bare Workflow](https://www.youtube.com/watch?v=ZaDpDlPr25M&t=1236s) para permitir acesso direto às permissões Android e IOS.
   2. Vídeos inspiradores:
-       [App de Agendamento para Barbeiros Parte 1](https://www.youtube.com/watch?v=kk_pGWBOkc4&t=9886s);
-       [App de Agendamento para Barbeiros Parte 2](https://www.youtube.com/watch?v=wdvxNgGV0sU&t=358s);
-       [TO-DO-LIST com Expo](https://www.youtube.com/watch?v=abvpbrwd6ek);
-       [Login e Senha com Firebase](https://www.youtube.com/watch?v=FNhmYBxktIs).
+       * [App de Agendamento para Barbeiros Parte 1](https://www.youtube.com/watch?v=kk_pGWBOkc4&t=9886s);
+       * [App de Agendamento para Barbeiros Parte 2](https://www.youtube.com/watch?v=wdvxNgGV0sU&t=358s);
+       * [TO-DO-LIST com Expo](https://www.youtube.com/watch?v=abvpbrwd6ek);
+       * [Login e Senha com Firebase](https://www.youtube.com/watch?v=FNhmYBxktIs).
   3. [Playlist útil](https://www.youtube.com/playlist?list=PLx4x_zx8csUgyDN7j9L7gykBjxByM_etD)
   4. Também foram encontrados muitos outros vídeos, sites e informações que nos ajudaram e nos ajudam a prosseguir no desenvolvimento deste projeto.
   5. O app tem uma tela Preload que verifica as informações do usuário (se o usuário já fez login uma vez, o sistema sempre reconecta ele automaticamente, mas se nenhum login for encontrado o sistema redireciona para o Login/Cadastro). A exibição desta tela é muito rápida mas ainda assim ela existe e tem sua função bem definida;
