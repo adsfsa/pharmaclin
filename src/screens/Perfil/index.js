@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Container,BtnDestaque, TextStyles, BtnNormal, CustomLInk, ModalAguarde } from '../../components/Components';
+import { Container, BtnDestaque, TextStyles, BtnNormal, CustomLInk, ModalAguarde } from '../../components/Components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { UserContext } from '../../contexts/UserContext';
-import Api from '../../Api'
+import Api from '../../Api';
 
 
 export default () => {
@@ -15,13 +15,51 @@ export default () => {
     const {dispatch: userDispatch} = useContext(UserContext);
 
     const Sair = () =>{
-        verLoading(true);
-        Api.sair(userDispatch, verLoading);  
+        Alert.alert(
+            "SAIR",
+            "Deseja sair?",
+            [
+                {
+                    text: "Sim",
+                    onPress: ()=>{
+                        verLoading(true);
+                        Api.sair(userDispatch, verLoading);
+                    }
+                },
+                {
+                    text: "Não",
+                    onPress: ()=> {
+                        return;
+                    },
+                    style: 'cancel'
+                }
+            ],
+            {cancelable: false}
+        );
     }
 
-    const ExcluirConta = async () =>{
-        verLoading(true);
-        Api.excluirConta(user.senha, userDispatch, verLoading);               
+    const ExcluirConta = () =>{
+        Alert.alert(
+            "EXCLUIR CONTA",
+            "Deseja excluir sua conta?",
+            [
+                {
+                    text: "Sim",
+                    onPress: ()=>{
+                        verLoading(true);
+                        Api.excluirConta(user.senha, userDispatch, verLoading);
+                    }
+                },
+                {
+                    text: "Não",
+                    onPress: ()=> {
+                        return;
+                    },
+                    style: 'cancel'
+                }
+            ],
+            {cancelable: false}
+        );       
     }
 
     return (

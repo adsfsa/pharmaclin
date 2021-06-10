@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Text, TouchableWithoutFeedback, View, Keyboard, TouchableOpacity, TextInput } from 'react-native';
+import { Text, TouchableWithoutFeedback, View, TouchableOpacity, TextInput } from 'react-native';
 import styled from 'styled-components/native';
 import { TextStyles } from '../../components/Components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -28,8 +28,8 @@ export default (
                             onChangeText = {
                                 novaAtualizacao => setNovaAtualizacao(novaAtualizacao)
                             }
-                            onFocus = {()=> abrirTeclado(true)}
-                            onBlur = {()=> abrirTeclado(false)}
+                            //onFocus = {()=> abrirTeclado(true)}
+                            //onBlur = {()=> abrirTeclado(false)}
                         />
                     :   <Text style={TextStyles.baseText}>
                             {atualizou ? novaAtualizacao : item}

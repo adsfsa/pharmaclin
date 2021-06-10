@@ -27,10 +27,10 @@ export default {
                                 //caso tenha rodado o app antes do dia 28 de maio, descomente a linha a seguir 
                                 //AsyncStorage.getAllKeys((error,keys)=>AsyncStorage.multiRemove(keys));
                                 navigation.reset({ routes: [{name: 'MainTab'}] });
-                                alert(`Bem vindo ${doc.data().nome}!`);
+                                Alert.alert("Olá!", `Bem vindo, ${doc.data().nome}!`);
                             }
                         });
-                    });                    
+                    });
                 }
                 else {
                     navigation.reset({ routes: [{name: 'Login'}] });
@@ -48,7 +48,7 @@ export default {
             try {
                 throw firebaseErrors[error.code] || error.message;
             } catch (e) {                        
-                alert(e);
+                Alert.alert("ERRO", e);
                 verLoading(false);
             }
         });
@@ -81,7 +81,8 @@ export default {
                 verLoading(false);
             })
             .catch((error) => {
-                console.error("Error adding document: ", error.code);
+                //console.error("Erro ao adicionar: ", error.code);
+                Alert.alert("Erro ao adicionar: ", error.code)
                 verLoading(false);
             });
         })
@@ -89,10 +90,10 @@ export default {
             try {
                 throw firebaseErrors[error.code] || error.message;
             } catch (e) {
-                alert(e);
+                Alert.alert("ERRO", e);
                 verLoading(false);
             }
-        });  
+        });
     },
 
     sair: async (userDispatch, verLoading) => {
@@ -101,12 +102,12 @@ export default {
             userDispatch({
                 type: 'clearState'
             });
-            alert("Desconectado!");
+            Alert.alert("Desconectado!");
             verLoading(false);
         })
         .catch((error) => {
             console.log(error.message);
-            alert("Ocorreu algum erro! Por favor tente novamente.");
+            Alert.alert("ERRO", "Ocorreu algum erro! Por favor tente novamente.");
             verLoading(false);
         });
     },
@@ -114,7 +115,7 @@ export default {
     excluirConta: async (senha, userDispatch, verLoading) => {
         var usuario = firebase.auth().currentUser;
         const credential = firebase.auth.EmailAuthProvider.credential(
-            usuario.email, 
+            usuario.email,
             senha
         );
         usuario.reauthenticateWithCredential(credential);
@@ -131,18 +132,18 @@ export default {
                             userDispatch({
                                 type: 'clearState'
                             });
-                            alert("Conta Excluída!");
+                            Alert.alert("Conta Excluída!");
                             verLoading(false);
                         })
                         .catch((error) => {
                             console.log(error.message);
-                            alert("Ocorreu algum erro! Por favor tente novamente.");
+                            Alert.alert("ERRO", "Ocorreu algum erro! Por favor tente novamente.");
                             verLoading(false);
                         });
                     })
                     .catch((error) => {
                         console.log(error.message);
-                        alert("Ocorreu algum erro! Por favor tente novamente.");
+                        Alert.alert("ERRO", "Ocorreu algum erro! Por favor tente novamente.");
                         verLoading(false);
                     });
                 }
@@ -150,7 +151,7 @@ export default {
         })
         .catch((error) => {
             console.log(error.message);
-            alert("Ocorreu algum erro! Por favor tente novamente.");
+            Alert.alert("ERRO", "Ocorreu algum erro! Por favor tente novamente.");
             verLoading(false);
         });
     },
@@ -208,7 +209,7 @@ export default {
         .catch((error) => {
             console.log(error.message);
             Alert.alert('ERRO!', 'Algo deu errado.');
-        });   
+        });
     },
 
     atualizarEmail: (email, id) => {
@@ -228,7 +229,7 @@ export default {
         .catch((error) => {
             console.log(error.message);
             Alert.alert('ERRO!', 'Algo deu errado.');
-        }); 
+        });
     },
 
     atualizarSenha: (senha, id) => {
@@ -248,7 +249,7 @@ export default {
         .catch((error) => {
             console.log(error.message);
             Alert.alert('ERRO!', 'Algo deu errado.');
-        });  
+        });
     },
     
     salvarInformacoesAdicionais: async(informacoesAdicionais) => {
@@ -270,10 +271,10 @@ export default {
             .catch((error) => {
                 console.log(error.message);
                 Alert.alert('ERRO!', 'Algo deu errado.');
-            });                    
+            });
         }
         else {
-            alert("Ocorreu algum erro! Por favor tente novamente.");
+            Alert.alert("ERRO", "Ocorreu algum erro! Por favor tente novamente.");
         }
     }
 };
